@@ -23,10 +23,10 @@ function suggest_friends(year_diff, dbname) {
     //For each pair, find if theyre not friends (the smaller id is in the first position of flat_users and the larger id is in second position)
     //add array of users to final array 
 
-//, YOB: {$gt: userA.YOB - year_diff, $lt: userA + year_diff}
+//
 
     db.users.find({gender: "male"}).forEach(function(userA){
-        db.users.find({gender: "female", "hometown.city": userA.hometown.city}).forEach(function(userB){
+        db.users.find({gender: "female", "hometown.city": userA.hometown.city, YOB: {$gt: userA.YOB - year_diff, $lt: userA + year_diff}}).forEach(function(userB){
             pairs.push([userA, userB])});
         });
 
