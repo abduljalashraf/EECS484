@@ -10,7 +10,7 @@
 function unwind_friends(dbname){
     db = db.getSiblingDB(dbname);
     // TODO: unwind friends
-    db.users.aggreagate([
+    db.users.aggregate([
       {$project: {
         user_id: 1,
         friends: 1,
