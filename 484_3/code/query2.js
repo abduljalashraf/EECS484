@@ -10,6 +10,7 @@
 function unwind_friends(dbname){
     db = db.getSiblingDB(dbname);
     // TODO: unwind friends
+    //Use project and out to create a new collection
     db.users.aggregate([
       {$unwind: "$friends"},
       {$project: {
