@@ -9,7 +9,7 @@ var l8 = load('query8.js')
 
 // fill in your database name
 // Your dbname is your uniqname
-var dbname = 'uniqname';
+var dbname = 'justanj';
 
 // test query1
 var test1 = find_user('Bucklebury',dbname);
