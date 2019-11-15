@@ -10,7 +10,13 @@
 function unwind_friends(dbname){
     db = db.getSiblingDB(dbname);
     // TODO: unwind friends
-
-    
+    var cur = db.users.aggreagate([
+      {$project: {
+        user_id: 1,
+        friends: 1,
+      }},
+      {$unwind: "$friends"},
+      {$out: flat_users}
+    ]);
     // returns nothing. It creates a collection instead as specified above.
 }
