@@ -7,7 +7,7 @@ function find_user(city, dbname){
     // db.users.find(...);
     var cur = db.users.find({"hometown.city" : city});
     results = cur.toArray();
-    console.log(results[1]);
+    printjson(results[1]);
     // See test.js for a partial correctness check.  
     // The result will be an array of integers. The order does not matter.                                                               
     return results;
