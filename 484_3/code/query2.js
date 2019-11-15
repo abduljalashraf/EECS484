@@ -16,7 +16,7 @@ function unwind_friends(dbname){
         friends: 1,
       }},
       {$unwind: "$friends"},
-      {$out: flat_users}
+      {$out: "flat_users"}
     ]);
     // returns nothing. It creates a collection instead as specified above.
 }
