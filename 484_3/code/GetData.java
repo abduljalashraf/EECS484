@@ -105,7 +105,9 @@ public class GetData{
     				"WHERE C.City_ID = H.Hometown_City_ID AND H.User_ID = " + rst.getInt(1)
                 );
                 
-                JSONObject temp_obj = new JSONObject();
+				JSONObject temp_obj = new JSONObject();
+				
+				rst2.next();
                 temp_obj.put("city", rst2.getString(1));
                 temp_obj.put("state", rst2.getString(2));
                 temp_obj.put("Country", rst2.getString(3));
@@ -120,7 +122,8 @@ public class GetData{
     				"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
     			);
     			// add to temp object
-    			// if doesn't exist, set as empty JSON object
+				// if doesn't exist, set as empty JSON object
+				rst2.next();
     			temp_obj.put("city", rst2.getString(1));
                 temp_obj.put("state", rst2.getString(2));
                 temp_obj.put("Country", rst2.getString(3));
