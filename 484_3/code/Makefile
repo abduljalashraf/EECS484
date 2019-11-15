@@ -1,5 +1,5 @@
 uniqname = justanj
-password = Monkeydog500
+password = justanj
 
 compile:
 	javac -Xlint:-unchecked -cp "ojdbc6.jar:json-20151123.jar:json_simple-1.1.jar:" Main.java GetData.java
