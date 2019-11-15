@@ -21,12 +21,19 @@ function oldest_friend(dbname){
   //Get all friends of user1
   var friends = [];
   var max = 0;
-  db.users.find().forEach(function(user1){
-    //find all users that have an id lower than user1, add those users to the friends array
-    db.users.find({user_id: {$lt: user1.user_id}}).forEach(function(user2){
-      printjson([user1, user2]);
-    })
-  })
+  db.users.aggregate([
+    {$unwind: "$friends"},
+    {$project: {
+      _id: 0,
+      user_id: 1,
+      friends: 1,
+    }},
+    {$group: {
+      _id: "$user_id",
+      friends: {$push: {user_id:"$friends"}}}},
+  ]);
+
+
 
   // friends.forEach(function(friend){
   //   if(friend.age > max){
