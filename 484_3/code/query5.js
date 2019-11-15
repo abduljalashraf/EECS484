@@ -12,22 +12,12 @@ function oldest_friend(dbname){
   // TODO: implement oldest friends
   // return an javascript object described above
   var friends = [];
-  db.users.aggregate([
-    {$unwind: "$friends"},
-    {$project: {
-      _id: 0,
-      user_id: 1,
-      friends: 1,
-    }},
+  db.flat_users.aggregate([
     {$group: {
       _id: "$user_id",
       friends: {$push: {user_id:"$friends"}}}},
     {$out: "user_friends"},
   ]);
-
-  db.user_friends.find().forEach(function(item){
-    printjson(item);
-  })
 
   return results
 }
