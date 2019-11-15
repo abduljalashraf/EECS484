@@ -100,7 +100,7 @@ public class GetData{
     			// separate query for hometown/current:
 
     			ResultSet rst2 = stmt2.executeQuery(
-    				"SELECT H.City_Name, H.State_Name, H.Country_Name " +
+    				"SELECT H.City_Name, H.State_Name " +
     				"FROM " + hometownCityTableName + " H, " + cityTableName + " C " +
     				"WHERE C.City_ID = H.Hometown_City_ID AND H.User_ID = " + rst.getInt(1)
                 );
