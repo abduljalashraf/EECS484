@@ -133,7 +133,7 @@ public class GetData{
     				"FROM " + friendsTableName + " F " +
     				"WHERE F.USER1_ID = " + rst.getInt(1)
                 );
-                JSONArray friends = new JSONArray;
+                JSONArray friends = new JSONArray();
                 while(rst2.next()){
                     friends.put(rst2.getInt(1));
                 }
