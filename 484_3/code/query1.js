@@ -5,6 +5,7 @@ function find_user(city, dbname){
     var results = [];
     // TODO: return a Javascript array of user_ids. 
     // db.users.find(...);
+    //Select distinct user id's where the user has a hometown and the hometown == city
     var cur = db.users.distinct("user_id", {hometown: {$exists : true}, "hometown.city" : city});
     cur.forEach(function(item){
         results.push(item)
