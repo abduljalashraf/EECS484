@@ -6,7 +6,7 @@ function find_user(city, dbname){
     // TODO: return a Javascript array of user_ids. 
     // db.users.find(...);
     var cur = db.users.aggregate("user_id", {hometown: {$exists : true}, "hometown.city" : city});
-    // cur.forEach(printjson);
+    cur.forEach(printjson);
     results = cur.toArray();
     // See test.js for a partial correctness check.  
     // The result will be an array of integers. The order does not matter.                                                               
