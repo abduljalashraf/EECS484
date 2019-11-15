@@ -14,7 +14,7 @@ function cities_table(dbname) {
     db.users.aggregate([{
       $group: {
         _id: "$current_city",
-        users: {$push: "$user_id"}}},
+        users: {$push: {user_id:"$user_id"}}}},
       {$out: "cities"}
     ]);
 
