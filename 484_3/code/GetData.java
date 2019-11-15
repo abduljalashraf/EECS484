@@ -78,11 +78,11 @@ public class GetData{
 		// Your implementation goes here....
     	
 
-    	try (Statement stmt = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY) {
-    		Statement stmt2 = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+    	try (Statement stmt = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+    		Statement stmt2 = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY));
     		ResultSet rst = stmt.executeQuery(
     			"SELECT U.User_ID, U.First_Name, U.Last_Name, U.Gender, U.Year_of_Birth, U.Month_of_Birth, U.Day_of_Birth " +
-    			"FROM " + userTableName " U "
+    			"FROM " + userTableName + " U "
     		);
 
     		// while (rst.next()) {
