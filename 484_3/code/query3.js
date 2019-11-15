@@ -11,6 +11,7 @@
 function cities_table(dbname) {
     db = db.getSiblingDB(dbname);
     // TODO: implemente cities collection here
+    //Use group to group by city name and push to insert users that have that city
     db.users.aggregate([{
       $group: {
         _id: "$hometown.city",
