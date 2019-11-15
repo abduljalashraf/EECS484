@@ -141,7 +141,7 @@ public class GetData{
                 temp_user.put("friends", friends);
 
     			// add temp_user to users_info and repeat
-
+                users_info.put(temp_user);
     		}
 
     		rst.close();
