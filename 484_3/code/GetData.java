@@ -75,9 +75,67 @@ public class GetData{
 
     	JSONArray users_info = new JSONArray();
 		
-	// Your implementation goes here....		
+		// Your implementation goes here....
     	
-		
+
+    	try (Statement stmt = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY) {
+    		Statement stmt2 = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+    		ResultSet rst = stmt.executeQuery(
+    			"SELECT U.User_ID, U.First_Name, U.Last_Name, U.Gender, U.Year_of_Birth, U.Month_of_Birth, U.Day_of_Birth " +
+    			"FROM " + userTableName " U "
+    		);
+
+    		while (rst.next()) {
+
+    			JSONObject temp_user = new JSONObject();
+
+
+    			// separate query for hometown/current:
+
+    			ResultSet rst2 = stmt2.executeQuery(
+    				"SELECT H.City_Name, H.State_Name, H.Country_Name " +
+    				"FROM " + hometownCityTableName " H, " + cityTableName + " C " +
+    				"WHERE C.City_ID = H.Hometown_City_ID AND H.User_ID = " + rst.getInt(1)
+    			);
+    			// add to temp object
+    			// with result set, temp_user.put("user_id", "1")
+    			// if doesn't exist, set as empty JSON object
+
+
+
+
+    			rst2 = stmt2.executeQuery(
+    				"SELECT C.City_Name, C.State_Name, C.Country_Name " +
+    				"FROM " + currentCityTableName " C, " + cityTableName + " CT " +
+    				"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
+    			);
+    			// add to temp object
+    			// if doesn't exist, set as empty JSON object
+    			
+
+
+
+    			// create a JSONarray for friends (only w/ greater IDs) and add that
+    			rst2 = stmt2.executeQuery(
+    				"SELECT F.USER2_ID " +
+    				"FROM " + friendsTableName + " F " +
+    				"WHERE F.USER1_ID = " + rst.getInt(1)
+    			);
+
+
+    		
+
+    			// add temp_user to users_info and repeat
+
+    		}
+
+    		rst.close();
+    		stmt.close();
+    	}
+    	catch (SQLException e) {
+    		System.err.println(e.getMessage());
+    	}
+
 		return users_info;
     }
 
