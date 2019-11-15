@@ -125,15 +125,20 @@ public class GetData{
                 temp_obj.put("state", rst2.getString(2));
                 temp_obj.put("Country", rst2.getString(3));
 
-                temp_user.put("country", temp_obj);
+                temp_user.put("current", temp_obj);
 
     			// create a JSONarray for friends (only w/ greater IDs) and add that
     			rst2 = stmt2.executeQuery(
     				"SELECT F.USER2_ID " +
     				"FROM " + friendsTableName + " F " +
     				"WHERE F.USER1_ID = " + rst.getInt(1)
-    			);
-   		
+                );
+                JSONArray friends = new JSONArray;
+                while(rst2.next()){
+                    friends.put(rst2.getInt(1));
+                }
+
+                temp_user.put("friends", friends);
 
     			// add temp_user to users_info and repeat
 
