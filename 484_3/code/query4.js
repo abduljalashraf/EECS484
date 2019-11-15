@@ -27,13 +27,10 @@ function suggest_friends(year_diff, dbname) {
 
     db.users.find({gender: "male"}).forEach(function(userA){
         db.users.find({gender: "female", "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}}).forEach(function(userB){
-            pairs.push([userA, userB])});
-        });
-
-    //         if(!db.flat_users.find({"user_id": Math.min(userA.user_id, userB.user_id), "friends": Math.max(userA.user_id, userB.user_id)}).hasNext())
-    //         pairs.push([userA.user_id, userB.user_id]);
-    //     })
-    // })
+            if(!db.flat_users.find({"user_id": Math.min(userA.user_id, userB.user_id), "friends": Math.max(userA.user_id, userB.user_id)}).hasNext())
+            pairs.push([userA.user_id, userB.user_id]);
+        })
+    });
 
     
     // Return an array of arrays.
