@@ -8,7 +8,8 @@ function find_user(city, dbname){
     var cur = db.users.find({"hometown.city" : city});
     // cur.forEach(printjson);
     res = cur.toArray();
-    res.forEach(printjson);
+    // res.forEach(printjson);
+    var siz = res.length;
     // See test.js for a partial correctness check.  
     // The result will be an array of integers. The order does not matter.                                                               
     return results;
