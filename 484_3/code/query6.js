@@ -6,7 +6,6 @@
 function find_average_friendcount(dbname){
   db = db.getSiblingDB(dbname)
   // TODO: return a decimal number of average friend count
-  print(db.flat_users.find().count());
   var total = 1.0 * db.flat_users.find().count() / db.users.find().count();
   
   return total;  
