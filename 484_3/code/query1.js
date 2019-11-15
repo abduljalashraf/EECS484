@@ -5,9 +5,8 @@ function find_user(city, dbname){
     var results = [];
     // TODO: return a Javascript array of user_ids. 
     // db.users.find(...);
-    var cur = db.users.find({"hometown.city" : city});
+    var cur = db.users.find({"hometown.city" : city}, {"hometown.city": {$exists : true}});
     results = cur.toArray();
-    results.forEach(printjson);
     // See test.js for a partial correctness check.  
     // The result will be an array of integers. The order does not matter.                                                               
     return results;
