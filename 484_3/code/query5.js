@@ -25,13 +25,13 @@ function oldest_friend(dbname){
 
   db.friends.aggregate([{$group: {_id: "$u1", friend: {$addToSet: "$u2"}}}]).forEach(function(user){
     //init values for _id, year of birth of the first friend, and the first friend
-    var a = user._id;
+    var uid = user._id;
     var maxYear = yob[user.friend[0]];
     var maxFriend = user.friend[0];
     //loop through friends and check if friend[i]'s age is larger than the current friend
     //if it is larger, update the max friend
     for(i = 0; i < user.friend.length; i++){
-      if(Math.min(maxYear, yob[user.friend[i]]) != y){
+      if(Math.min(maxYear, yob[user.friend[i]]) != maxYear){
         maxYear = yob[user.friend[i]];
         maxFriend = user.friend[i];
       }
@@ -41,7 +41,7 @@ function oldest_friend(dbname){
       // }
     }
 
-    results[a] = maxFriend;
+    results[uid] = maxFriend;
   })
   return results
 }
