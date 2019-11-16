@@ -16,7 +16,7 @@ var city_average_friendcount_reducer = function(key, values) {
     val.user_count += values[i].user_count;
     val.friend_count += values[i].friends;
   }
-  return val;
+  return {key, val};
 };
 
 var city_average_friendcount_finalizer = function(key, reduceVal) {
