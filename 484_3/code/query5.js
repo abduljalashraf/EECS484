@@ -27,21 +27,22 @@ function oldest_friend(dbname){
     //init values for _id, year of birth of the first friend, and the first friend
     var uid = user._id;
     var maxYear = yob[user.friend[0]];
-    var maxFriend = user.friend[0];
+    var oldestFriend = user.friend[0];
     //loop through friends and check if friend[i]'s age is larger than the current friend
-    //if it is larger, update the max friend
+    //if it is larger, update the max friend. Older friend will have a smaller year
     for(i = 0; i < user.friend.length; i++){
-      if(Math.min(maxYear, yob[user.friend[i]]) != maxYear){
+      //if next friend is older than current friend, update the year and which friend is the oldest
+      if(maxYear > yob[user.friend[i]]){
         maxYear = yob[user.friend[i]];
-        maxFriend = user.friend[i];
+        oldestFriend = user.friend[i];
       }
-      else if(Math.max(maxYear, yob[user.friend[i]]) == maxYear){
-        //if next friends year is smaller than current friends year, update max friend to be the 
-        maxFriend = Math.min(maxFriend, user.friend[i]);
+      else if(maxYear == yob[user.friend[i]]){
+        //if next friend is the same age, take lowest user_id
+        oldestFriend = Math.min(oldestFriend, user.friend[i]);
       }
     }
 
-    results[uid] = maxFriend;
+    results[uid] = oldestFriend;
   })
   return results
 }
