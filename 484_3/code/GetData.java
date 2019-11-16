@@ -107,10 +107,10 @@ public class GetData{
                 );
                 
 				JSONObject temp_obj = new JSONObject();
-				if(!rst2.next()){
-					temp_user.put("hometown", temp_obj);
-				}
-				else{
+				// if(!rst2.next()){
+				// 	temp_user.put("hometown", temp_obj);
+				// }
+				// else{
 					rst2.next();
 					// temp_obj.put("city", rst2.getString(1));
 					// temp_obj.put("state", rst2.getString(2));
@@ -119,13 +119,13 @@ public class GetData{
 					temp_obj.put("state", "is");
 					temp_obj.put("Country", "dumb");
 					temp_user.put("hometown", temp_obj);
-				}
+				// }
 				
     			// add to temp object
     			// with result set, temp_user.put("user_id", "1")
     			// if doesn't exist, set as empty JSON object
 
-    			ResultSet rst2 = stmt2.executeQuery(
+    			rst2 = stmt2.executeQuery(
     				"SELECT CT.City_Name, CT.State_Name, CT.Country_Name " +
     				"FROM " + currentCityTableName + " C, " + cityTableName + " CT " +
     				"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
@@ -134,10 +134,10 @@ public class GetData{
 				// if doesn't exist, set as empty JSON object
 				JSONObject temp_obj2 = new JSONObject();
 
-				if(!rst2.next()){
-					temp_user.put("current", temp_obj);
-				}
-				else{
+				// if(!rst2.next()){
+				// 	temp_user.put("current", temp_obj);
+				// }
+				// else{
 					rst2.next();
 					// temp_obj2.put("city", rst2.getString(1));
 					// temp_obj2.put("state", rst2.getString(2));
@@ -147,7 +147,7 @@ public class GetData{
 					temp_obj2.put("Country", "smart");
 
 					temp_user.put("current", temp_obj2);
-				}
+				// }
 
     			// create a JSONarray for friends (only w/ greater IDs) and add that
     			rst2 = stmt2.executeQuery(
