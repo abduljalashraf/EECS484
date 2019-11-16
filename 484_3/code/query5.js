@@ -35,10 +35,10 @@ function oldest_friend(dbname){
         maxYear = yob[user.friend[i]];
         maxFriend = user.friend[i];
       }
-      // else if(Math.max(maxYear, yob[user.friend[i]]) == y){
-      //   //if next friends year is smaller than current friends year, update max friend to be the 
-      //   maxFriend = Math.min(maxFriend, user.friend[i]);
-      // }
+      else if(Math.max(maxYear, yob[user.friend[i]]) == maxYear){
+        //if next friends year is smaller than current friends year, update max friend to be the 
+        maxFriend = Math.min(maxFriend, user.friend[i]);
+      }
     }
 
     results[uid] = maxFriend;
