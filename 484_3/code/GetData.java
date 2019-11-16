@@ -107,20 +107,20 @@ public class GetData{
                 );
                 
 				JSONObject temp_obj = new JSONObject();
-				// if(!rst2.next()){
-				// 	temp_user.put("hometown", temp_obj);
-				// }
-				// else{
-					while(rst2.next()){
-					// temp_obj.put("city", rst2.getString(1));
-					// temp_obj.put("state", rst2.getString(2));
-					// temp_obj.put("Country", rst2.getString(3));
-					temp_obj.put("city", "anj");
-					temp_obj.put("state", "is");
-					temp_obj.put("Country", "dumb");
-					// temp_user.put("hometown", temp_obj);
-					}
-				// }
+				if(!rst2.next()){
+					temp_user.put("hometown", temp_obj);
+				}
+				else{
+					rst2.next();
+					temp_obj.put("city", rst2.getString(1));
+					temp_obj.put("state", rst2.getString(2));
+					temp_obj.put("Country", rst2.getString(3));
+					// temp_obj.put("city", "anj");
+					// temp_obj.put("state", "is");
+					// temp_obj.put("Country", "dumb");
+					temp_user.put("hometown", temp_obj);
+				}
+				
 				
     			// add to temp object
     			// with result set, temp_user.put("user_id", "1")
@@ -135,19 +135,19 @@ public class GetData{
 				// if doesn't exist, set as empty JSON object
 				JSONObject temp_obj2 = new JSONObject();
 
-				// if(!rst2.next()){
-				// 	temp_user.put("current", temp_obj);
-				// }
-				// else{
+				if(!rst2.next()){
+					temp_user.put("current", temp_obj);
+				}
+				else{
 					rst2.next();
-					// temp_obj2.put("city", rst2.getString(1));
-					// temp_obj2.put("state", rst2.getString(2));
-					// temp_obj2.put("Country", rst2.getString(3));
-					temp_obj2.put("city", "anj");
-					temp_obj2.put("state", "is");
-					temp_obj2.put("Country", "smart");
+					temp_obj2.put("city", rst2.getString(1));
+					temp_obj2.put("state", rst2.getString(2));
+					temp_obj2.put("Country", rst2.getString(3));
+					// temp_obj2.put("city", "anj");
+					// temp_obj2.put("state", "is");
+					// temp_obj2.put("Country", "smart");
 
-					// temp_user.put("current", temp_obj2);
+					temp_user.put("current", temp_obj2);
 				// }
 
     			// create a JSONarray for friends (only w/ greater IDs) and add that
