@@ -60,7 +60,7 @@ if (ans4 === 90){
 var test5 = oldest_friend(dbname);
 if(Object.keys(test5).length === 799){
  if(test5.hasOwnProperty(517)){
-	var ans5 = test5[517].length;
+	var ans5 = test5[517];
     if(test5[517] == 426){
       print("test5 correct!")
     } else {
