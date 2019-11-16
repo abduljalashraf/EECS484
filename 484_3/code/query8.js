@@ -24,6 +24,5 @@ var city_average_friendcount_finalizer = function(key, reduceVal) {
   // We've implemented a simple forwarding finalize function. This implementation 
   // is naive: it just forwards the reduceVal to the output collection.
   // Feel free to change it if needed.
-  var ret = 1.0 * reduceVal.friend_count / reduceVal.user_count;
-  return ret;
+  return 1.0 * reduceVal.friend_count / reduceVal.user_count;
 }
