@@ -80,7 +80,6 @@ public class GetData{
 
     	try (Statement stmt = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
     		Statement stmt2 = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			Statement stmt3 = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			ResultSet rst = stmt.executeQuery(
     			"SELECT U.User_ID, U.First_Name, U.Last_Name, U.Gender, U.Year_of_Birth, U.Month_of_Birth, U.Day_of_Birth " +
@@ -123,23 +122,25 @@ public class GetData{
     			// with result set, temp_user.put("user_id", "1")
     			// if doesn't exist, set as empty JSON object
 
-    			ResultSet rst3 = stmt3.executeQuery(
+    			ResultSet rst2 = stmt2.executeQuery(
     				"SELECT CT.City_Name, CT.State_Name, CT.Country_Name " +
     				"FROM " + currentCityTableName + " C, " + cityTableName + " CT " +
     				"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
     			);
     			// add to temp object
 				// if doesn't exist, set as empty JSON object
-				if(!rst3.next()){
+				JSONObject temp_obj2 = new JSONObject();
+
+				if(!rst2.next()){
 					temp_user.put("current", temp_obj);
 				}
 				else{
-					rst3.next();
-					temp_obj.put("city", rst3.getString(1));
-					temp_obj.put("state", rst3.getString(2));
-					temp_obj.put("Country", rst3.getString(3));
+					rst2.next();
+					temp_obj2.put("city", rst2.getString(1));
+					temp_obj2.put("state", rst2.getString(2));
+					temp_obj2.put("Country", rst2.getString(3));
 
-					temp_user.put("current", temp_obj);
+					temp_user.put("current", temp_obj2);
 				}
 
     			// create a JSONarray for friends (only w/ greater IDs) and add that
