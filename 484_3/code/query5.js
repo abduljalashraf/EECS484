@@ -16,15 +16,13 @@ function oldest_friend(dbname){
 	db.runCommand({create: "friends", capped: true, size: 2 * db.flat_users.find().count()});
 	db.flat_users.find().forEach(function(d) {
     db.friends.insert([{"u1":d.user_id, "u2":d.friends}, {"u1":d.friends, "u2":d.user_id}]);
-    // db.runCommand({insert: "friends", documents: [ {"u1": d.user_id, "u2": d.friends }, 
-    // {"u1": d.friends, "u2": d.user_id } ] } );
   });
   
   //put birth years into an object using user_id as the index
-  var yob = {};
+  var yob = [];
 	db.users.find().forEach(function(d) {yob[d.user_id] = d.YOB;});
 
-  db.friends.aggregate([{$group: {_id: "$u1", friend: {$addToSet: "$u2"}}}]).forEach(function(user){
+  db.friends.aggregate([{$group: {_id: "$u1", friend: {$push: "$u2"}}}]).forEach(function(user){
     //init values for _id, year of birth of the first friend, and the first friend
     var uid = user._id;
     var maxYear = yob[user.friend[0]];
