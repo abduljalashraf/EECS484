@@ -23,26 +23,29 @@ function oldest_friend(dbname){
   var yob = [];
 	db.users.find().forEach(function(d) {yob[d.user_id] = d.YOB;});
 
-  db.friends.aggregate([{$group: {_id: "$u1", friend: {$push: "$u2"}}}]).forEach(function(user){
-    //init values for _id, year of birth of the first friend, and the first friend
-    var uid = user._id;
-    var maxYear = yob[user.friend[0]];
-    var oldestFriend = user.friend[0];
-    //loop through friends and check if friend[i]'s age is larger than the current friend
-    //if it is larger, update the max friend. Older friend will have a smaller year
-    for(i = 0; i < user.friend.length; i++){
-      //if next friend is older than current friend, update the year and which friend is the oldest
-      if(maxYear < yob[user.friend[i]]){
-        maxYear = yob[user.friend[i]];
-        oldestFriend = user.friend[i];
-      }
-      else if(maxYear == yob[user.friend[i]]){
-        //if next friend is the same age, take lowest user_id
-        oldestFriend = Math.min(oldestFriend, user.friend[i]);
-      }
-    }
-
-    results[uid] = oldestFriend;
+  db.users.find().forEach(function(user){
+    db.friends.find({u2}, {u1: user}).forEach(printjson);
   })
+  // db.friends.aggregate([{$group: {_id: "$u1", friend: {$push: "$u2"}}}]).forEach(function(user){
+  //   //init values for _id, year of birth of the first friend, and the first friend
+  //   var uid = user._id;
+  //   var maxYear = yob[user.friend[0]];
+  //   var oldestFriend = user.friend[0];
+  //   //loop through friends and check if friend[i]'s age is larger than the current friend
+  //   //if it is larger, update the max friend. Older friend will have a smaller year
+  //   for(i = 0; i < user.friend.length; i++){
+  //     //if next friend is older than current friend, update the year and which friend is the oldest
+  //     if(maxYear < yob[user.friend[i]]){
+  //       maxYear = yob[user.friend[i]];
+  //       oldestFriend = user.friend[i];
+  //     }
+  //     else if(maxYear == yob[user.friend[i]]){
+  //       //if next friend is the same age, take lowest user_id
+  //       oldestFriend = Math.min(oldestFriend, user.friend[i]);
+  //     }
+  //   }
+
+  //   results[uid] = oldestFriend;
+  // })
   return results
 }
