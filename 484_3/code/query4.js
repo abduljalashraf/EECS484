@@ -27,7 +27,7 @@ function suggest_friends(year_diff, dbname) {
     //Check if friends array exists
     db.users.find({gender: "male"}).forEach(function(userA){
         db.users.find({gender: "female", "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}}).forEach(function(userB){            
-            if(!db.flat_users.find({"user_id": Math.min(u1.user_id, u2.user_id), "friends": Math.max(u1.user_id, u2.user_id)}).hasNext()) 
+            if(!db.flat_users.find({"user_id": Math.min(userA.user_id, userB.user_id), "friends": Math.max(userA.user_id, userB.user_id)}).hasNext()) 
             pairs.push([userA.user_id, userB.user_id]);
             
             // ((userA.friends.length == 0 || userB.friends.length == 0) || ((userA.friends.length != 0 && userA.friends.indexOf(userB.user_id) == -1) 
