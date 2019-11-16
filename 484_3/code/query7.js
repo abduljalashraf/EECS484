@@ -2,7 +2,7 @@
 
 var num_month_mapper = function() {
   // Implement the map function
-  emit(this.MOB);
+  emit(this.MOB, this.user_id);
 }
 
 var num_month_reducer = function(key, values) {
