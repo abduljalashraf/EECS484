@@ -7,7 +7,9 @@ var num_month_mapper = function() {
 
 var num_month_reducer = function(key, values) {
   // Implement the reduce function
-  return Array.sum(values)
+  var sum = Array.sum(values);
+  var ret = {key, sum};
+  return ret;
 }
 
 var num_month_finalizer = function(key, reduceVal) {
