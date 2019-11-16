@@ -31,7 +31,7 @@ function oldest_friend(dbname){
     //if it is larger, update the max friend. Older friend will have a smaller year
     for(i = 0; i < user.friend.length; i++){
       //if next friend is older than current friend, update the year and which friend is the oldest
-      if(maxYear < yob[user.friend[i]]){
+      if(maxYear > yob[user.friend[i]]){
         maxYear = yob[user.friend[i]];
         oldestFriend = user.friend[i];
       }
