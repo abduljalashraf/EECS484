@@ -154,11 +154,14 @@ public class GetData{
                 temp_user.put("friends", friends);
 
     			// add temp_user to users_info and repeat
-                users_info.put(temp_user);
+				users_info.put(temp_user);
+				rst2.close();
+				stmt2.close();
     		}
 
     		rst.close();
-    		stmt.close();
+			stmt.close();
+			
     	}
     	catch (SQLException e) {
     		System.err.println(e.getMessage());
