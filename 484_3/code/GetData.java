@@ -139,9 +139,12 @@ public class GetData{
 				}
 				else{
 					rst2.next();
-					temp_obj2.put("city", rst2.getString(1));
-					temp_obj2.put("state", rst2.getString(2));
-					temp_obj2.put("Country", rst2.getString(3));
+					// temp_obj2.put("city", rst2.getString(1));
+					// temp_obj2.put("state", rst2.getString(2));
+					// temp_obj2.put("Country", rst2.getString(3));
+					temp_obj2.put("city", "anj");
+					temp_obj2.put("state", "is");
+					temp_obj2.put("Country", "smart");
 
 					temp_user.put("current", temp_obj2);
 				}
