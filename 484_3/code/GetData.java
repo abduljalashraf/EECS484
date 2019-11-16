@@ -115,6 +115,7 @@ public class GetData{
 					temp_obj.put("state", rst2.getString(2));
 					temp_obj.put("Country", rst2.getString(3));
 					temp_user.put("hometown", temp_obj);
+					print("hometown: " + temp_obj);
 				}
 				
     			// add to temp object
