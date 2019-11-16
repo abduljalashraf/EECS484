@@ -13,7 +13,8 @@ function oldest_friend(dbname){
   // return an javascript object described above
   db.friends.drop();
   //Make table of all friends by flipping the flat_users table and combining it with the original flat_users table
-	db.runCommand({create: "friends", capped: true, size: 2 * db.flat_users.find().count()});
+  // db.runCommand({create: "friends", capped: true, size: 2 * db.flat_users.find().count()});
+  db.createCollection("friends", {capped: true, size: 2 * db.flat_users.find().count()});
 	db.flat_users.find().forEach(function(d) {
     db.friends.insert([{"u1":d.user_id, "u2":d.friends}, {"u1":d.friends, "u2":d.user_id}]);
   });
