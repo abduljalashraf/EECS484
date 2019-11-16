@@ -7,7 +7,7 @@ var num_month_mapper = function() {
 
 var num_month_reducer = function(key, values) {
   // Implement the reduce function
-  key.printjson();
+  printjson(key);
   return Array.sum(values)
 }
 
