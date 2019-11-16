@@ -18,24 +18,24 @@ function oldest_friend(dbname){
   });
   
   //put birth years into an array using user_id as the index
-  var yob = {};
-	db.users.find().forEach(function(d) {yob[d.user_id] = d.YOB;});
+  // var yob = {};
+	// db.users.find().forEach(function(d) {yob[d.user_id] = d.YOB;});
 
   
   db.friends.aggregate([{$group: {_id: "$user1", friend: {$push: "$user2"}}}]).forEach(function(user){
     //init values for _id, year of birth of the first friend, and the first friend
     var uid = user._id;
-    var maxYear = yob[user.friend[0]];
+    var maxYear = user.friend[0].YOB;
     var oldestFriend = user.friend[0];
     //loop through friends and check if friend[i]'s age is larger than the current friend
     //if it is larger, update the max friend. Older friend will have a smaller year
     for(i = 0; i < user.friend.length; i++){
       //if next friend is older than current friend, update the year and which friend is the oldest
-      if(maxYear > yob[user.friend[i]]){
-        maxYear = yob[user.friend[i]];
+      if(maxYear > user.friend[i].YOB){
+        maxYear = user.friend[i].YOB;
         oldestFriend = user.friend[i];
       }
-      else if(maxYear == yob[user.friend[i]]){
+      else if(maxYear == user.friend[i].YOB){
         //if next friend is the same age, take lowest user_id
         oldestFriend = Math.min(oldestFriend, user.friend[i]);
       }
