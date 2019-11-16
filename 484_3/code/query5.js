@@ -15,8 +15,9 @@ function oldest_friend(dbname){
   //Make table of all friends by flipping the flat_users table and combining it with the original flat_users table
 	db.runCommand({create: "friends", capped: true, size: 2 * db.flat_users.find().count()});
 	db.flat_users.find().forEach(function(d) {
-    db.runCommand({insert: "friends", documents: [ {"u1": d.user_id, "u2": d.friends }, 
-    {"u1": d.friends, "u2": d.user_id } ] } );
+    db.friends.insert([{"u1":d.user_id, "u2":d.friends}, {"u1":d.friends, "u2":d.user_id}]);
+    // db.runCommand({insert: "friends", documents: [ {"u1": d.user_id, "u2": d.friends }, 
+    // {"u1": d.friends, "u2": d.user_id } ] } );
   });
   
   //put birth years into an object using user_id as the index
