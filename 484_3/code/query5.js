@@ -24,7 +24,7 @@ function oldest_friend(dbname){
 	db.users.find().forEach(function(d) {yob[d.user_id] = d.YOB;});
 
   db.users.find().forEach(function(user){
-    db.friends.find({u2}, {u1: user}).forEach(printjson);
+    db.friends.find({"u2": 1}, {"u1": user}).forEach(printjson);
   })
   // db.friends.aggregate([{$group: {_id: "$u1", friend: {$push: "$u2"}}}]).forEach(function(user){
   //   //init values for _id, year of birth of the first friend, and the first friend
