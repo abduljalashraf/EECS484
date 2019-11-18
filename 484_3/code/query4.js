@@ -37,7 +37,6 @@ function suggest_friends(year_diff, dbname) {
             //Check if the two users show up in the flat_users table, this would mean they are friends
             var areFriends = db.flat_users.find({user_id: Math.min(userA.user_id, userB.user_id), 
                 friends: Math.max(userA.user_id, userB.user_id)});
-
             //if they are not friends (no entry was found for those ID's) then add them to pairs
             if(!areFriends.hasNext()){
                 pairs.push([userA.user_id, userB.user_id]);
