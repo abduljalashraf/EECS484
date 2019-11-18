@@ -126,11 +126,11 @@ public class GetData{
     			// with result set, temp_user.put("user_id", "1")
     			// if doesn't exist, set as empty JSON object
 
-    			rst2 = stmt2.executeQuery(
-    				"SELECT CT.City_Name, CT.State_Name, CT.Country_Name " +
-    				"FROM " + currentCityTableName + " C, " + cityTableName + " CT " +
-    				"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
-    			);
+    			// rst2 = stmt2.executeQuery(
+    			// 	"SELECT CT.City_Name, CT.State_Name, CT.Country_Name " +
+    			// 	"FROM " + currentCityTableName + " C, " + cityTableName + " CT " +
+    			// 	"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
+    			// );
     			// add to temp object
 				// if doesn't exist, set as empty JSON object
 				JSONObject temp_obj2 = new JSONObject();
@@ -139,29 +139,29 @@ public class GetData{
 				// 	temp_user.put("current", temp_obj);
 				// }
 				// else{
-					rst2.next();
-					temp_obj2.put("state", rst2.getString(2));
-					temp_obj2.put("Country", rst2.getString(3));
-					temp_obj2.put("city", rst2.getString(1));
-					// temp_obj2.put("city", "anj");
-					// temp_obj2.put("state", "is");
-					// temp_obj2.put("Country", "smart");
+					// rst2.next();
+					// temp_obj2.put("state", rst2.getString(2));
+					// temp_obj2.put("Country", rst2.getString(3));
+					// temp_obj2.put("city", rst2.getString(1));
+					// // temp_obj2.put("city", "anj");
+					// // temp_obj2.put("state", "is");
+					// // temp_obj2.put("Country", "smart");
 
-					temp_user.put("current", temp_obj2);
+					// temp_user.put("current", temp_obj2);
 			    // }
 
     			// create a JSONarray for friends (only w/ greater IDs) and add that
-    			rst2 = stmt2.executeQuery(
-    				"SELECT F.USER2_ID " +
-    				"FROM " + friendsTableName + " F " +
-    				"WHERE F.USER1_ID = " + rst.getInt(1)
-                );
-                JSONArray friends = new JSONArray();
-                while(rst2.next()){
-                    friends.put(rst2.getInt(1));
-                }
+    			// rst2 = stmt2.executeQuery(
+    			// 	"SELECT F.USER2_ID " +
+    			// 	"FROM " + friendsTableName + " F " +
+    			// 	"WHERE F.USER1_ID = " + rst.getInt(1)
+                // );
+                // JSONArray friends = new JSONArray();
+                // while(rst2.next()){
+                //     friends.put(rst2.getInt(1));
+                // }
 
-                temp_user.put("friends", friends);
+                // temp_user.put("friends", friends);
 
     			// add temp_user to users_info and repeat
 				users_info.put(temp_user);
