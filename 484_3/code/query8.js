@@ -12,10 +12,10 @@ var city_average_friendcount_mapper = function() {
 var city_average_friendcount_reducer = function(city, values) {
   // implement the reduce function of average friend count
   //Find the total number of users and friends in each city
-  var reducedVal = {user_count: 0, friend_count: 0};
+  var reducedVal = {user_count: 0, friends: 0};
   for(var i = 0; i < values.length; i++){
     reducedVal.user_count += values[i].user_count;
-    reducedVal.friend_count += values[i].friends;
+    reducedVal.friends += values[i].friends;
   }
   return reducedVal;
 };
@@ -25,5 +25,5 @@ var city_average_friendcount_finalizer = function(key, reduceVal) {
   // is naive: it just forwards the reduceVal to the output collection.
   // Feel free to change it if needed.
 
-  return 1.0 * reduceVal.friend_count / reduceVal.user_count;
+  return 1.0 * reduceVal.friends / reduceVal.user_count;
 }
