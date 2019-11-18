@@ -26,27 +26,26 @@ function suggest_friends(year_diff, dbname) {
     //flat_users contains all user/friend combos without arrays. The lower id is listed first.
     //Check that the min of userA and userB and the max of userA and userB are not corresponding 
     //entries in the flat_users table. This means that they are not friends
+
+    //Find males who have an existing hometown
     var males = db.users.find({gender: "male", hometown: {$exists: true}});
     males.forEach(function(userA){
+        //find females who have an existing hometown that is the same as the male, and a YOB within year_diff
+
+        //"hometown.city": userA.hometown.city,
         var female = db.users.find({gender: "female", hometown: {$exists: true}, 
-        "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
+         YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
+            //Check if the two users show up in the flat_users table, this would mean they are friends
             var areFriends = db.flat_users.find({user_id: Math.min(userA.user_id, userB.user_id), 
                 friends: Math.max(userA.user_id, userB.user_id)});
+
+            //if they are not friends (no entry was found for those ID's) then add them to pairs
             if(!areFriends.hasNext()){
                 pairs.push([userA.user_id, userB.user_id]);
             }
         })
     })
-
-    // db.users.find({gender: "male", hometown: {$exists: true}}).forEach(function(userA){
-    //     db.users.find({gender: "female", hometown: {$exists: true}, "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}}).forEach(function(userB){            
-    //         if(!db.flat_users.find({user_id: Math.min(userA.user_id, userB.user_id), friends: Math.max(userA.user_id, userB.user_id)}).hasNext()){ 
-    //             pairs.push([userA.user_id, userB.user_id]);
-    //         }
-    //     })
-    // });
-
     
     // Return an array of arrays.
     return pairs;
