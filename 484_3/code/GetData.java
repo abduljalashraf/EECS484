@@ -94,9 +94,9 @@ public class GetData{
                 temp_user.put("first_name", rst.getString(2));
                 temp_user.put("last_name", rst.getString(3));
                 temp_user.put("gender", rst.getString(4));
-                temp_user.put("YEAR_OF_BIRTH", rst.getInt(5));
-                temp_user.put("MONTH_OF_BIRTH", rst.getInt(6));
-                temp_user.put("DAY_OF_BIRTH", rst.getInt(7));
+                temp_user.put("YOB", rst.getInt(5));
+                temp_user.put("MOB", rst.getInt(6));
+                temp_user.put("DOB", rst.getInt(7));
 
     			// separate query for hometown/current:
 
@@ -111,10 +111,10 @@ public class GetData{
 					temp_user.put("hometown", temp_obj);
 				}
 				else{
-					rst2.next();
-					temp_obj.put("city", rst2.getString(1));
+					rst2.next(); // DO WE NEED TO DO THIS AGAIN??????
 					temp_obj.put("state", rst2.getString(2));
 					temp_obj.put("Country", rst2.getString(3));
+					temp_obj.put("city", rst2.getString(1));
 					// temp_obj.put("city", "anj");
 					// temp_obj.put("state", "is");
 					// temp_obj.put("Country", "dumb");
@@ -140,15 +140,15 @@ public class GetData{
 				}
 				else{
 					rst2.next();
-					temp_obj2.put("city", rst2.getString(1));
 					temp_obj2.put("state", rst2.getString(2));
 					temp_obj2.put("Country", rst2.getString(3));
+					temp_obj2.put("city", rst2.getString(1));
 					// temp_obj2.put("city", "anj");
 					// temp_obj2.put("state", "is");
 					// temp_obj2.put("Country", "smart");
 
 					temp_user.put("current", temp_obj2);
-				// }
+			    }
 
     			// create a JSONarray for friends (only w/ greater IDs) and add that
     			rst2 = stmt2.executeQuery(
