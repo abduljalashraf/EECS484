@@ -31,10 +31,8 @@ function suggest_friends(year_diff, dbname) {
     var males = db.users.find({gender: "male", hometown: {$exists: true}});
     males.forEach(function(userA){
         //find females who have an existing hometown that is the same as the male, and a YOB within year_diff
-
-        //"hometown.city": userA.hometown.city,
         var female = db.users.find({gender: "female", hometown: {$exists: true}, 
-         YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
+        "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
             //Check if the two users show up in the flat_users table, this would mean they are friends
             var areFriends = db.flat_users.find({user_id: Math.min(userA.user_id, userB.user_id), 
