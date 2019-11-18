@@ -86,83 +86,83 @@ public class GetData{
     			"FROM " + userTableName + " U "
     		);
 
-    		while (rst.next()) {
+    		// while (rst.next()) {
 
-    			JSONObject temp_user = new JSONObject();
+    		// 	JSONObject temp_user = new JSONObject();
 
-                temp_user.put("user_id", rst.getInt(1));
-                temp_user.put("first_name", rst.getString(2));
-                temp_user.put("last_name", rst.getString(3));
-                temp_user.put("gender", rst.getString(4));
-                temp_user.put("YOB", rst.getInt(5));
-                temp_user.put("MOB", rst.getInt(6));
-                temp_user.put("DOB", rst.getInt(7));
+            //     temp_user.put("user_id", rst.getInt(1));
+            //     temp_user.put("first_name", rst.getString(2));
+            //     temp_user.put("last_name", rst.getString(3));
+            //     temp_user.put("gender", rst.getString(4));
+            //     temp_user.put("YOB", rst.getInt(5));
+            //     temp_user.put("MOB", rst.getInt(6));
+            //     temp_user.put("DOB", rst.getInt(7));
 
-    			// separate query for hometown/current:
+    		// 	// separate query for hometown/current:
 
-    			ResultSet rst2 = stmt2.executeQuery(
-    				"SELECT C.City_Name, C.State_Name, C.Country_Name " +
-    				"FROM " + hometownCityTableName + " H, " + cityTableName + " C " +
-    				"WHERE C.City_ID = H.Hometown_City_ID AND H.User_ID = " + rst.getInt(1)
-                );
+    		// 	ResultSet rst2 = stmt2.executeQuery(
+    		// 		"SELECT C.City_Name, C.State_Name, C.Country_Name " +
+    		// 		"FROM " + hometownCityTableName + " H, " + cityTableName + " C " +
+    		// 		"WHERE C.City_ID = H.Hometown_City_ID AND H.User_ID = " + rst.getInt(1)
+            //     );
                 
-				JSONObject temp_obj = new JSONObject();
-				if(!rst2.next()){
-					temp_user.put("hometown", temp_obj);
-				}
-				else{
-					// rst2.next(); // DO WE NEED TO DO THIS AGAIN??????
-					temp_obj.put("state", rst2.getString(2));
-					temp_obj.put("Country", rst2.getString(3));
-					temp_obj.put("city", rst2.getString(1));
-					temp_user.put("hometown", temp_obj);
-				}
+			// 	JSONObject temp_obj = new JSONObject();
+			// 	if(!rst2.next()){
+			// 		temp_user.put("hometown", temp_obj);
+			// 	}
+			// 	else{
+			// 		// rst2.next(); // DO WE NEED TO DO THIS AGAIN??????
+			// 		temp_obj.put("state", rst2.getString(2));
+			// 		temp_obj.put("Country", rst2.getString(3));
+			// 		temp_obj.put("city", rst2.getString(1));
+			// 		temp_user.put("hometown", temp_obj);
+			// 	}
 				
 				
-    			// add to temp object
-    			// with result set, temp_user.put("user_id", "1")
-    			// if doesn't exist, set as empty JSON object
+    		// 	// add to temp object
+    		// 	// with result set, temp_user.put("user_id", "1")
+    		// 	// if doesn't exist, set as empty JSON object
 
-    			rst2 = stmt2.executeQuery(
-    				"SELECT CT.City_Name, CT.State_Name, CT.Country_Name " +
-    				"FROM " + currentCityTableName + " C, " + cityTableName + " CT " +
-    				"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
-    			);
-    			// add to temp object
-				// if doesn't exist, set as empty JSON object
-				JSONObject temp_obj2 = new JSONObject();
+    		// 	rst2 = stmt2.executeQuery(
+    		// 		"SELECT CT.City_Name, CT.State_Name, CT.Country_Name " +
+    		// 		"FROM " + currentCityTableName + " C, " + cityTableName + " CT " +
+    		// 		"WHERE CT.City_ID = C.Current_City_ID AND C.User_ID = " + rst.getInt(1)
+    		// 	);
+    		// 	// add to temp object
+			// 	// if doesn't exist, set as empty JSON object
+			// 	JSONObject temp_obj2 = new JSONObject();
 
-				if(!rst2.next()){
-					temp_user.put("current", temp_obj);
-				}
-				else{
-					// rst2.next();
-					temp_obj2.put("state", rst2.getString(2));
-					temp_obj2.put("Country", rst2.getString(3));
-					temp_obj2.put("city", rst2.getString(1));
+			// 	if(!rst2.next()){
+			// 		temp_user.put("current", temp_obj);
+			// 	}
+			// 	else{
+			// 		// rst2.next();
+			// 		temp_obj2.put("state", rst2.getString(2));
+			// 		temp_obj2.put("Country", rst2.getString(3));
+			// 		temp_obj2.put("city", rst2.getString(1));
 					
-					temp_user.put("current", temp_obj2);
-			    }
+			// 		temp_user.put("current", temp_obj2);
+			//     }
 
-    			// create a JSONarray for friends (only w/ greater IDs) and add that
-    			rst2 = stmt2.executeQuery(
-    				"SELECT F.USER2_ID " +
-    				"FROM " + friendsTableName + " F " +
-    				"WHERE F.USER1_ID = " + rst.getInt(1)
-				);
+    		// 	// create a JSONarray for friends (only w/ greater IDs) and add that
+    		// 	rst2 = stmt2.executeQuery(
+    		// 		"SELECT F.USER2_ID " +
+    		// 		"FROM " + friendsTableName + " F " +
+    		// 		"WHERE F.USER1_ID = " + rst.getInt(1)
+			// 	);
 				
-                JSONArray friends = new JSONArray();
-                while(rst2.next()){
-                    friends.put(rst2.getInt(1));
-                }
+            //     JSONArray friends = new JSONArray();
+            //     while(rst2.next()){
+            //         friends.put(rst2.getInt(1));
+            //     }
 
-                temp_user.put("friends", friends);
+            //     temp_user.put("friends", friends);
 
-    			// add temp_user to users_info and repeat
-				users_info.put(temp_user);
-				rst2.close();
-				stmt2.close();
-    		}
+    		// 	// add temp_user to users_info and repeat
+			// 	users_info.put(temp_user);
+			// 	rst2.close();
+			// 	stmt2.close();
+    		// }
 		
     		rst.close();
 			stmt.close();
