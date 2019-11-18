@@ -111,7 +111,7 @@ public class GetData{
 					temp_user.put("hometown", temp_obj);
 				}
 				else{
-					rst2.next(); // DO WE NEED TO DO THIS AGAIN??????
+					// rst2.next(); // DO WE NEED TO DO THIS AGAIN??????
 					temp_obj.put("state", rst2.getString(2));
 					temp_obj.put("Country", rst2.getString(3));
 					temp_obj.put("city", rst2.getString(1));
@@ -139,7 +139,7 @@ public class GetData{
 					temp_user.put("current", temp_obj);
 				}
 				else{
-					rst2.next();
+					// rst2.next();
 					temp_obj2.put("state", rst2.getString(2));
 					temp_obj2.put("Country", rst2.getString(3));
 					temp_obj2.put("city", rst2.getString(1));

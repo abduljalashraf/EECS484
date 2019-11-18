@@ -5,18 +5,19 @@
 
 var city_average_friendcount_mapper = function() {
   // implement the Map function of average friend count
-  emit(this.hometown.city, {user_count: 1, friends: this.friends.length});
+  var length = this.friends.length;
+  emit(this.hometown.city, {user_count: 1, friends: length});
 };
 
-var city_average_friendcount_reducer = function(key, values) {
+var city_average_friendcount_reducer = function(city, values) {
   // implement the reduce function of average friend count
   //Find the total number of users and friends in each city
-  var val = {user_count: 0, friend_count: 0};
-  for(i = 0; i < values.length; i++){
-    val.user_count += values[i].user_count;
-    val.friend_count += values[i].friends;
+  var reducedVal = {user_count: 0, friend_count: 0};
+  for(var i = 0; i < values.length; i++){
+    reducedVal.user_count += values[i].user_count;
+    reducedVal.friend_count += values[i].friends;
   }
-  return {key, val};
+  return reducedVal;
 };
 
 var city_average_friendcount_finalizer = function(key, reduceVal) {

@@ -2,14 +2,13 @@
 
 var num_month_mapper = function() {
   // Implement the map function
-  emit(this.MOB, this.user_id);
+  emit(this.MOB, 1);
 }
 
 var num_month_reducer = function(key, values) {
   // Implement the reduce function
-  var sum = Array.sum(values);
-  var ret = {key, sum};
-  return ret;
+
+  return Array.sum(values);
 }
 
 var num_month_finalizer = function(key, reduceVal) {
