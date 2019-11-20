@@ -27,11 +27,13 @@ function suggest_friends(year_diff, dbname) {
     //Check that the min of userA and userB and the max of userA and userB are not corresponding 
     //entries in the flat_users table. This means that they are not friends
 
+    // , hometown: {$exists: true}
+
     //Find males who have an existing hometown
-    var males = db.users.find({gender: "male", hometown: {$exists: true}});
+    var males = db.users.find({gender: "male"});
     males.forEach(function(userA){
         //find females who have an existing hometown that is the same as the male, and a YOB within year_diff
-        var female = db.users.find({gender: "female", hometown: {$exists: true}, 
+        var female = db.users.find({gender: "female", 
         "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
             //If user A is older than user B
