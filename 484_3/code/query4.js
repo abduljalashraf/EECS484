@@ -34,9 +34,8 @@ function suggest_friends(year_diff, dbname) {
         var female = db.users.find({gender: "female", hometown: {$exists: true}, 
         "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
-            //Check if the two users show up in the flat_users table, this would mean they are friends
             //If user A is older than user B
-            if(userA.YOB == userB.YOB){
+            if(userA.YOB < userB.YOB){
                 //and user B has a friends array
                 if(userB.friends){
                     var indA = userB.friends.indexOf(userA.user_id);
