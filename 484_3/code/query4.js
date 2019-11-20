@@ -47,7 +47,7 @@ function suggest_friends(year_diff, dbname) {
                     }
                 }
             }
-            else if(userA.YOB > userB.YOB){
+            else if(userA.YOB >= userB.YOB){
                 if(userA.friends){
                     var indB = userA.friends.indexOf(userB.user_id);
                     if(indB == -1){
