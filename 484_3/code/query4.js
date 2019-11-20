@@ -37,7 +37,7 @@ function suggest_friends(year_diff, dbname) {
             //Check if the two users show up in the flat_users table, this would mean they are friends
             var minId = Math.min(userA.user_id, userB.user_id);
             //If user A is older than user B
-            if(userA.YOB <= userB.YOB){
+            if(userA.YOB = userB.YOB){
                 //and user B has a friends array
                 if(userB.friends){
                     var indA = userB.friends.indexOf(userA.user_id);
