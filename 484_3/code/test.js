@@ -49,7 +49,6 @@ if(ans3 === 56){
 var test4 = suggest_friends(5,dbname);
 var ans4 = test4.length;
 if (ans4 === 90){
-	print(test4);
 	print("test4 correct!")
 } else {
 	print("test4 incorrect!")
