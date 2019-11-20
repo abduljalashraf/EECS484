@@ -43,7 +43,7 @@ function suggest_friends(year_diff, dbname) {
                     pairs.push([userA.user_id, userB.user_id]);
                 }
             }
-            else if(userA.user_id > userB.user_id && userA.friends){
+            else if(userA.user_id < userB.user_id && userA.friends){
                 var indB = userA.friends.indexOf(userB.user_id);
                 if(indB == -1){
                     pairs.push([userA.user_id, userB.user_id]);
