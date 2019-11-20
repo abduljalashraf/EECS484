@@ -27,32 +27,26 @@ function suggest_friends(year_diff, dbname) {
     //Check that the min of userA and userB and the max of userA and userB are not corresponding 
     //entries in the flat_users table. This means that they are not friends
 
-    // , hometown: {$exists: true}
-
     //Find males who have an existing hometown
-    var males = db.users.find({gender: "male"});
+    var males = db.users.find({gender: "male", hometown: {$exists: true}});
     males.forEach(function(userA){
         //find females who have an existing hometown that is the same as the male, and a YOB within year_diff
-        var female = db.users.find({gender: "female", 
+        var female = db.users.find({gender: "female", hometown: {$exists: true}, 
         "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
             //If user A is older than user B
-            if(userA.YOB < userB.YOB){
+            if(userA.YOB < userB.YOB && userB.friends){
                 //and user B has a friends array
-                if(userB.friends){
-                    var indA = userB.friends.indexOf(userA.user_id);
-                    //if they arent friends
-                    if(indA == -1){
-                        pairs.push([userA.user_id, userB.user_id]);
-                    }
+                var indA = userB.friends.indexOf(userA.user_id);
+                //if they arent friends
+                if(indA == -1){
+                    pairs.push([userA.user_id, userB.user_id]);
                 }
             }
-            else if(userA.YOB > userB.YOB){
-                if(userA.friends){
-                    var indB = userA.friends.indexOf(userB.user_id);
-                    if(indB == -1){
-                        pairs.push([userA.user_id, userB.user_id]);
-                    }
+            else if(userA.YOB > userB.YOB && userA.friends){
+                var indB = userA.friends.indexOf(userB.user_id);
+                if(indB == -1){
+                    pairs.push([userA.user_id, userB.user_id]);
                 }
             }
             
