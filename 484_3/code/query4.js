@@ -35,7 +35,7 @@ function suggest_friends(year_diff, dbname) {
         "hometown.city": userA.hometown.city, YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
             //If user A is older than user B
-            if(userA.YOB > userB.YOB && userB.friends){
+            if(userA.user_id > userB.user_id && userB.friends){
                 //and user B has a friends array
                 var indA = userB.friends.indexOf(userA.user_id);
                 //if they arent friends
@@ -43,7 +43,7 @@ function suggest_friends(year_diff, dbname) {
                     pairs.push([userA.user_id, userB.user_id]);
                 }
             }
-            else if(userA.YOB < userB.YOB && userA.friends){
+            else if(userA.user_id > userB.user_id && userA.friends){
                 var indB = userA.friends.indexOf(userB.user_id);
                 if(indB == -1){
                     pairs.push([userA.user_id, userB.user_id]);
