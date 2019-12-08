@@ -28,14 +28,14 @@ function suggest_friends(year_diff, dbname) {
     //entries in the flat_users table. This means that they are not friends
 
     //Find males who have an existing hometown
-    var males = db.users.find({gender: "male", "hometown.city": {$exists: true}});
+    var males = db.users.find({gender: "male", hometown: {$length: {$gt: 0}}});
     males.forEach(function(userA){
         //find females who have an existing hometown that is the same as the male, and a YOB within year_diff
-        var female = db.users.find({gender: "female", "hometown.city": {$exists: true}, "hometown.city": userA.hometown.city, 
+        var female = db.users.find({gender: "female", hometown: {$length: {$gt: 0}}, 
         YOB: {$lt: userA.YOB + year_diff, $gt: userA.YOB - year_diff}});
         female.forEach(function(userB){
             //If user A is older than user B
-            if(userA.user_id > userB.user_id){
+            if(userA.user_id > userB.user_id && userA.hometown.city == userB.hometown.city){
                 if(userB.friends){
                     //and user B has a friends array
                     var indA = userB.friends.indexOf(userA.user_id);
@@ -48,7 +48,7 @@ function suggest_friends(year_diff, dbname) {
                     pairs.push([userA.user_id, userB.user_id]);
                 }
             }
-            else if(userA.user_id < userB.user_id){
+            else if(userA.user_id < userB.user_id && userA.hometown.city == userB.hometown.city){
                 if(userA.friends){
                     var indB = userA.friends.indexOf(userB.user_id);
                     if(indB == -1){
