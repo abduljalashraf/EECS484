@@ -9,7 +9,7 @@ var l8 = load('query8.js')
 
 // fill in your database name
 // Your dbname is your uniqname
-var dbname = 'uniqname';
+var dbname = 'justanj';
 
 // test query1
 var test1 = find_user('Bucklebury',dbname);
@@ -60,6 +60,7 @@ if (ans4 === 90){
 var test5 = oldest_friend(dbname);
 if(Object.keys(test5).length === 799){
  if(test5.hasOwnProperty(517)){
+	var ans5 = test5[517];
     if(test5[517] == 426){
       print("test5 correct!")
     } else {
