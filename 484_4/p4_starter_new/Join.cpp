@@ -31,12 +31,12 @@ vector<Bucket> partition(
 
 
 	// initialize our output vector
-	Bucket empty_bucket(disk);
-	vector<Bucket> partitions((MEM_SIZE_IN_PAGE - 1), empty_bucket);
+	// Bucket empty_bucket(disk);
+	// vector<Bucket> partitions((MEM_SIZE_IN_PAGE - 1), empty_bucket);
 
 
 	// hash all the tuples of left_rel into buckets
-	for (unsigned int i = left_rel.first; i < left_rel.second; ++i) {
+	// for (unsigned int i = left_rel.first; i < left_rel.second; ++i) {
 
 		//mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
 		// Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
@@ -58,7 +58,7 @@ vector<Bucket> partition(
 
 		//}
 
-	}
+	// }
 	// // flush if anything left in B-1 buckets in memory pages (loop through and check size)
 	// for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
 	// 	if (((mem->mem_page(i))->size()) > 0) {
@@ -99,7 +99,7 @@ vector<Bucket> partition(
 	// 	}
 	// }
 
-	return partitions;
+	// return partitions;
     
 }
 
