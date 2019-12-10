@@ -38,7 +38,7 @@ vector<Bucket> partition(
 	// hash all the tuples of left_rel into buckets
 	for (unsigned int i = left_rel.first; i < left_rel.second; ++i) {
 
-		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
+		//mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
 		// Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
 		// unsigned int num_records = input_buffer->size();
 
