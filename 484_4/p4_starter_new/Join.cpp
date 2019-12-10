@@ -161,7 +161,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					unsigned int hash_val = (record.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);
 
 					Page* matching_page = mem->mem_page(hash_val);
-					for (unsigned int s = 0; s < matching_page.size(); s++) {
+					for (unsigned int s = 0; s < matching_page->size(); s++) {
 						if (s == r) {
 							// WE HAVE A MATCH
 							// check if output buffer is full
@@ -171,7 +171,58 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							}
 
 							// load to output buffer
-							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(r, s);
+							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(r, matching_page->get_record(s));
+
+						}
+					}
+				}
+			}
+
+		}
+
+
+
+		if (outer_rel == "right") {
+
+			// loop through the left_rel items in each bucket
+			for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
+				vector<unsigned int> right_rel = partitions[i].get_right_rel();
+				unsigned int disk_page = right_rel[j];
+				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
+				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));
+				unsigned int num_records = input_buffer->size();
+				for (unsigned int r = 0; r < num_records; ++r) {
+					Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+					unsigned int hash_val = (record.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);
+
+					// loadRecord
+					(mem->mem_page(hash_val))->loadRecord(record);
+				}
+			}
+
+			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
+			for (unsigned int j = 0; j < partitions[i].num_left_rel_record; j++) {
+				vector<unsigned int> left_rel = partitions[i].get_left_rel();
+				unsigned int disk_page = left_rel[j];
+				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
+				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));
+				unsigned int num_records = input_buffer->size();
+				for (unsigned int r = 0; r < num_records; ++r) {
+					Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+					unsigned int hash_val = (record.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);
+
+					Page* matching_page = mem->mem_page(hash_val);
+					for (unsigned int s = 0; s < matching_page->size(); s++) {
+						if (s == r) {
+							// WE HAVE A MATCH
+							// check if output buffer is full
+							if (output_buffer->full()) {
+								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+								result.push_back(flushed_disk_page);
+							}
+
+							// load to output buffer
+							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(record, matching_page->get_record(s));
 
 						}
 					}
