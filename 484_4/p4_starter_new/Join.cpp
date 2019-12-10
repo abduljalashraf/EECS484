@@ -171,7 +171,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							}
 
 							// load to output buffer
-							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(r, matching_page->get_record(s));
+							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(record, matching_page->get_record(s));
 
 						}
 					}
