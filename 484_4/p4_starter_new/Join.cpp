@@ -39,10 +39,10 @@ vector<Bucket> partition(
 	for (unsigned int i = left_rel.first; i < left_rel.second; ++i) {
 
 		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
-		Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
-		unsigned int num_records = input_buffer->size();
+		// Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
+		// unsigned int num_records = input_buffer->size();
 
-		for (unsigned int r = 0; r < num_records; ++r) {
+		//for (unsigned int r = 0; r < num_records; ++r) {
 
 			// Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
 			// unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
@@ -56,7 +56,7 @@ vector<Bucket> partition(
 			// // loadRecord
 			// (mem->mem_page(hash_val))->loadRecord(record);
 
-		}
+		//}
 
 	}
 	// // flush if anything left in B-1 buckets in memory pages (loop through and check size)
