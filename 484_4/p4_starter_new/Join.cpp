@@ -111,19 +111,77 @@ vector<Bucket> partition(
  */
 vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
-	disk = disk;
-	mem = mem;
-	partitions = partitions;
-
 	vector<unsigned int> result;
-	result.push_back(1);
+	
+	unsigned int num_right_rel = 0;
+	unsigned int num_left_rel = 0;
+	for (unsigned int i = 0; i < partitions.size(); ++i) {
+		num_right_rel += partitions[i].num_right_rel_record;
+		num_left_rel += partitions[i].num_left_rel_record;
+	}
 
-	return result;
+	string outer_rel;
+	if (num_right_rel >= num_left_rel) {
+		outer_rel = "left";
+	}
+	else {
+		outer_rel = "right";
+	}
+
+	// loop through each bucket one by one
+	for (unsigned int i = 0; i < partitions.size(); ++i) {
+
+		if (outer_rel == "left") {
+
+			// loop through the left_rel items in each bucket
+			for (unsigned int j = 0; j < partitions[i].left_rel.size(); j++) {
+
+				unsigned int disk_page = partitions[i].left_rel[j];
+				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
+				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));
+				unsigned int num_records = input_buffer->size();
+				for (unsigned int r = 0; r < num_records; ++r) {
+					Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+					unsigned int hash_val = (record.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);
+
+					// loadRecord
+					(mem->mem_page(hash_val))->loadRecord(record);
+				}
+			}
+
+			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
+			for (unsigned int j = 0; j < partitions[i].right_rel.size(); j++) {
+				unsigned int disk_page = partitions[i].right_rel[j];
+				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
+				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));
+				unsigned int num_records = input_buffer->size();
+				for (unsigned int r = 0; r < num_records; ++r) {
+					Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+					unsigned int hash_val = (record.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);
+
+					Page* matching_page = mem->mem_page(hash_val);
+					for (unsigned int s = 0; s < matching_page.size(); s++) {
+						if (s == r) {
+							// WE HAVE A MATCH
+							// check if output buffer is full
+							if (output_buffer->full()) {
+								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+								result.push_back(flushed_disk_page);
+							}
+
+							// load to output buffer
+							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(r, s);
+
+						}
+					}
+				}
+			}
+
+		}
+
+	}
 
 
-	// ACTUALLY FIND THE LARGER/SMALLER RELATIONS - go through all buckets in R and add up the variable, same with S
-	// pair<unsigned int, unsigned int> smaller_rel = left_rel;
-	// pair<unsigned int, unsigned int> larger_rel = right_rel;
 
 	// my understanding of probe:
 	// vector of buckets, partitions. Go through this one at a time and look at a whole bucket of Ri. Re-hash these things with new hashing function
@@ -133,14 +191,12 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 	// in the probing phase, one buffer input page, one output buffer page, B - 2 left, use last two as input/output
 
-
-	// need to calculate which relation is smaller?? (compare total sizes, # of records)
-
 	// pull partition Ri and create a hash table of the tuples in Ri
 
 	// check partition Si for matches, hash first though
 
 	// use == to check if any of the relations' keys in the smaller relation match the key of the larger rel
+	return result;
 }
 
 
