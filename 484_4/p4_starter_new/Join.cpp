@@ -10,9 +10,12 @@
 
 // OH QUESTIONS:
 
-// how to find number of records in left_rel and right_rel?
+// how to find number of records in left_rel and right_rel? need to calculate which rel is smaller WHEN?
 // What specific mem page to load to? just choose an input buffer page?
 // what is the page ID in line 51?
+// flush output buffers to disk after hashing R? when flushing to disk, why do you not have to know where to put it? 
+// check understanding of partition and probe
+// final result of probe is what??
 
 
 /*
@@ -26,10 +29,6 @@ vector<Bucket> partition(
     pair<unsigned int, unsigned int> left_rel, 
     pair<unsigned int, unsigned int> right_rel) {
 
-	
-	// ACTUALLY FIND THE LARGER/SMALLER RELATIONS
-	pair<unsigned int, unsigned int> smaller_rel = left_rel;
-	pair<unsigned int, unsigned int> larger_rel = right_rel;
 
 
 	// initialize our output vector
@@ -38,32 +37,38 @@ vector<Bucket> partition(
 
 
 	// hash all the tuples of R into buckets
-	for (unsigned int i = smaller_rel.first; i < smaller_rel.second; ++i) {
-		mem->loadFromDisk(disk, i, SPECIFIC_MEM_PAGE);
+	for (unsigned int i = left_rel.first; i < left_rel.second; ++i) {
+		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
 
-		Page* page = mem->mem_page(SPECIFIC_MEM_PAGE);
-		unsigned int num_records = page->size();
+		Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
+		unsigned int num_records = input_buffer->size();
 		for (unsigned int r = 0; r < num_records; ++r) {
-			Record record = page->get_record(r); // index of vector<Record> in page.cpp
+			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
 			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
-			if (smaller_rel == left_rel) {
-				partitions[hash_val].add_left_rel_page(PAGE_ID);
-			}
-			else {
-				partitions[hash_val].add_right_rel_page(PAGE_ID);
-			}
+			// put this record to the corresponding memory page (this hash val is the index to the vector)
+			// check if this memory page is full, if so, flush to disk (buckets_result_vector[hash val] add left rel val (disk id page that returned by flushing))
+			// loadRecord
+
+
+		
+			partitions[hash_val].add_left_rel_page(PAGE_ID);
+			
+		
+			
 
 		}
-	}
 
+		// flush if anything left in B-1 buckets in memory pages (loop through and check size)
+	}
+	// FLUSH OUTPUT BUFFERS TO DISK??
 
 	// hash all the tuples of S into buckets
 	for (unsigned int i = larger_rel.first; i < larger_rel.second; ++i) {
-		mem->loadFromDisk(disk, i, SPECIFIC_MEM_PAGE);
+		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1));
 	}
 
-	// write to disk?
+	// FLUSH OUTPUT BUFFERS TO DISK??
     
 }
 
@@ -74,6 +79,20 @@ vector<Bucket> partition(
  * Output: Vector of disk page ids for join result
  */
 vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
+
+
+	// ACTUALLY FIND THE LARGER/SMALLER RELATIONS - go through all buckets in R and add up the variable, same with S
+	pair<unsigned int, unsigned int> smaller_rel = left_rel;
+	pair<unsigned int, unsigned int> larger_rel = right_rel;
+
+	// my understanding of probe:
+	// vector of buckets, partitions. Go through this one at a time and look at a whole bucket of Ri. Re-hash these things with new hashing function
+	// then take the matching bucket Si and hash each of these things with the new hashing function. only things that match to the same bucket could match
+	// this is when you use == to compare and look for matches/joins
+
+
+	// in the probing phase, one buffer input page, one output buffer page, B - 2 left, use last two as input/output
+
 
 	// need to calculate which relation is smaller?? (compare total sizes, # of records)
 
