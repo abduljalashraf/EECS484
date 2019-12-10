@@ -44,17 +44,17 @@ vector<Bucket> partition(
 
 		for (unsigned int r = 0; r < num_records; ++r) {
 
-			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
-			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
+			// Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+			// unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
-			// check if this memory page is full
-			if ((mem->mem_page(hash_val))->full()) {
-				unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
-				partitions[hash_val].add_left_rel_page(flushed_disk_page);
-			}
+			// // check if this memory page is full
+			// if ((mem->mem_page(hash_val))->full()) {
+			// 	unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
+			// 	partitions[hash_val].add_left_rel_page(flushed_disk_page);
+			// }
 
-			// loadRecord
-			(mem->mem_page(hash_val))->loadRecord(record);
+			// // loadRecord
+			// (mem->mem_page(hash_val))->loadRecord(record);
 
 		}
 
