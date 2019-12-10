@@ -150,8 +150,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 			}
 
 			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
-			for (unsigned int j = 0; j < partitions[i].right_rel.size(); j++) {
-				unsigned int disk_page = partitions[i].right_rel[j];
+			for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
+				vector<unsigned int> right_rel = partitions[i].get_right_rel();
+				unsigned int disk_page = right_rel[j];
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));
 				unsigned int num_records = input_buffer->size();
