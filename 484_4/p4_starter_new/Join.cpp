@@ -46,25 +46,22 @@ vector<Bucket> partition(
 			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
 			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
-			// put this record to the corresponding memory page (this hash val is the index to the vector)
-			// check if this memory page is full, if so, flush to disk (buckets_result_vector[hash val] add left rel val (disk id page that returned by flushing))
+			// check if this memory page is full
+			if ((mem->mem_page(hash_val))->full()) {
+				unsigned int flushed_disk_page = mem->flush_to_disk(d, hash_val);
+				partitions[hash_val].add_left_rel_page(flushed_disk_page);
+			}
+
 			// loadRecord
-
-
-		
-			partitions[hash_val].add_left_rel_page(PAGE_ID);
-			
-		
-			
+			(mem->mem_page(hash_val))->loadRecord(record);
 
 		}
 
-		// flush if anything left in B-1 buckets in memory pages (loop through and check size)
 	}
-	// FLUSH OUTPUT BUFFERS TO DISK??
+	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
 
 	// hash all the tuples of S into buckets
-	for (unsigned int i = larger_rel.first; i < larger_rel.second; ++i) {
+	for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
 		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1));
 	}
 
