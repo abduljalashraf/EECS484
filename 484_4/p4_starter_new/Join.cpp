@@ -30,25 +30,26 @@ vector<Bucket> partition(
     pair<unsigned int, unsigned int> right_rel) {
 
 
-
 	// initialize our output vector
 	Bucket empty_bucket(disk);
 	vector<Bucket> partitions((MEM_SIZE_IN_PAGE - 1), empty_bucket);
 
 
-	// hash all the tuples of R into buckets
+	// hash all the tuples of left_rel into buckets
 	for (unsigned int i = left_rel.first; i < left_rel.second; ++i) {
-		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
 
+		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
 		Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
 		unsigned int num_records = input_buffer->size();
+
 		for (unsigned int r = 0; r < num_records; ++r) {
+
 			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
 			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
 			// check if this memory page is full
 			if ((mem->mem_page(hash_val))->full()) {
-				unsigned int flushed_disk_page = mem->flush_to_disk(d, hash_val);
+				unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
 				partitions[hash_val].add_left_rel_page(flushed_disk_page);
 			}
 
@@ -59,13 +60,46 @@ vector<Bucket> partition(
 
 	}
 	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
-
-	// hash all the tuples of S into buckets
-	for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
-		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1));
+	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
+		if (((mem->mem_page(i))->size()) > 0) {
+			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+			partitions[i+1].add_left_rel_page(flushed_disk_page);
+		}
 	}
 
-	// FLUSH OUTPUT BUFFERS TO DISK??
+
+	// hash all the tuples of right_rel into buckets
+	for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
+
+		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
+		Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
+		unsigned int num_records = input_buffer->size();
+
+		for (unsigned int r = 0; r < num_records; ++r) {
+
+			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
+
+			// check if this memory page is full
+			if ((mem->mem_page(hash_val))->full()) {
+				unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
+				partitions[hash_val].add_right_rel_page(flushed_disk_page);
+			}
+
+			// loadRecord
+			(mem->mem_page(hash_val))->loadRecord(record);
+
+		}
+	}
+	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
+	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
+		if (((mem->mem_page(i))->size()) > 0) {
+			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+			partitions[i+1].add_right_rel_page(flushed_disk_page);
+		}
+	}
+
+	return partitions;
     
 }
 
@@ -79,8 +113,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 
 	// ACTUALLY FIND THE LARGER/SMALLER RELATIONS - go through all buckets in R and add up the variable, same with S
-	pair<unsigned int, unsigned int> smaller_rel = left_rel;
-	pair<unsigned int, unsigned int> larger_rel = right_rel;
+	// pair<unsigned int, unsigned int> smaller_rel = left_rel;
+	// pair<unsigned int, unsigned int> larger_rel = right_rel;
 
 	// my understanding of probe:
 	// vector of buckets, partitions. Go through this one at a time and look at a whole bucket of Ri. Re-hash these things with new hashing function
