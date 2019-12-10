@@ -59,45 +59,45 @@ vector<Bucket> partition(
 		}
 
 	}
-	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
-	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
-		if (((mem->mem_page(i))->size()) > 0) {
-			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
-			partitions[i+1].add_left_rel_page(flushed_disk_page);
-		}
-	}
+	// // flush if anything left in B-1 buckets in memory pages (loop through and check size)
+	// for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
+	// 	if (((mem->mem_page(i))->size()) > 0) {
+	// 		unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+	// 		partitions[i+1].add_left_rel_page(flushed_disk_page);
+	// 	}
+	// }
 
 
-	// hash all the tuples of right_rel into buckets
-	for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
+	// // hash all the tuples of right_rel into buckets
+	// for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
 
-		mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
-		Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
-		unsigned int num_records = input_buffer->size();
+	// 	mem->loadFromDisk(disk, i, (MEM_SIZE_IN_PAGE - 1)); // input buffer page is the last one in memory
+	// 	Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));
+	// 	unsigned int num_records = input_buffer->size();
 
-		for (unsigned int r = 0; r < num_records; ++r) {
+	// 	for (unsigned int r = 0; r < num_records; ++r) {
 
-			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
-			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
+	// 		Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+	// 		unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
-			// check if this memory page is full
-			if ((mem->mem_page(hash_val))->full()) {
-				unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
-				partitions[hash_val].add_right_rel_page(flushed_disk_page);
-			}
+	// 		// check if this memory page is full
+	// 		if ((mem->mem_page(hash_val))->full()) {
+	// 			unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
+	// 			partitions[hash_val].add_right_rel_page(flushed_disk_page);
+	// 		}
 
-			// loadRecord
-			(mem->mem_page(hash_val))->loadRecord(record);
+	// 		// loadRecord
+	// 		(mem->mem_page(hash_val))->loadRecord(record);
 
-		}
-	}
-	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
-	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
-		if (((mem->mem_page(i))->size()) > 0) {
-			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
-			partitions[i+1].add_right_rel_page(flushed_disk_page);
-		}
-	}
+	// 	}
+	// }
+	// // flush if anything left in B-1 buckets in memory pages (loop through and check size)
+	// for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
+	// 	if (((mem->mem_page(i))->size()) > 0) {
+	// 		unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+	// 		partitions[i+1].add_right_rel_page(flushed_disk_page);
+	// 	}
+	// }
 
 	return partitions;
     
