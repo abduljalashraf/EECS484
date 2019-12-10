@@ -134,9 +134,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 		if (outer_rel == "left") {
 
 			// loop through the left_rel items in each bucket
-			for (unsigned int j = 0; j < partitions[i].left_rel.size(); j++) {
-
-				unsigned int disk_page = partitions[i].left_rel[j];
+			for (unsigned int j = 0; j < partitions[i].num_left_rel_record; j++) {
+				vector<unsigned int> left_rel = partitions[i].get_left_rel();
+				unsigned int disk_page = left_rel[j];
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));
 				unsigned int num_records = input_buffer->size();
