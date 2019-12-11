@@ -190,11 +190,12 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
 							// WE HAVE A MATCH
 							// check if output buffer is full
-                            std::cout << "CHECKFORERROR" << std::endl;
 
 							if (output_buffer->full()) {
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
+                                std::cout << "CHECKFORERROR" << std::endl;
+
 							}
 
 							// load to output buffer
