@@ -84,7 +84,6 @@ vector<Bucket> partition(
 			// check if this memory page is full
 			if ((mem->mem_page(hash_val))->full()) {
 				unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
-                std::cout << "disk page = " << flushed_disk_page << std::endl;
 
 				partitions[hash_val].add_right_rel_page(flushed_disk_page);
 			}
@@ -98,6 +97,8 @@ vector<Bucket> partition(
 	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
 		if (((mem->mem_page(i))->size()) > 0) {
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+            std::cout << "disk page = " << flushed_disk_page << std::endl;
+
 			partitions[i+1].add_right_rel_page(flushed_disk_page);
 		}
 	}
