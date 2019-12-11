@@ -198,6 +198,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							// check if output buffer is full
 
 							if (output_buffer->full()) {
+                                std::cout << "go in here?" << std::endl;
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
 
