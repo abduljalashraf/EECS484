@@ -158,7 +158,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
                 
 				vector<unsigned int> left_rel = partitions[i].get_left_rel();
                 std::cout << "left_rel size = " << left_rel.size() << std::endl;
+                //HERE IS THE ERROR! LEFT_REL IS SMALLER THAN J SO YOU CANT ACCESS THAT
 				unsigned int disk_page = left_rel[j];                                           //Find page on disk where left_rel is
+                std::cout << "disk_page = " << disk_page << std::endl;
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                     //load left_rel into input buffer page from memory
 				unsigned int num_records = input_buffer->size();
@@ -176,24 +178,24 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
             //Start right_rel rehashing
 			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                        //creates output buffer page that points to last page in memory
             for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
-                std::cout << "num_right_record = " << partitions[i].num_right_rel_record << std::endl;
+//                std::cout << "num_right_record = " << partitions[i].num_right_rel_record << std::endl;
 
 				vector<unsigned int> right_rel = partitions[i].get_right_rel();                 //get right_rel from ith bucket in partition
 				unsigned int disk_page = right_rel[j];                                          //get page on disk where right_rel is
-                std::cout << "disk page = " << disk_page << std::endl;
+//                std::cout << "disk page = " << disk_page << std::endl;
                 mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                     //create input buffer page that points to second to last page
 				unsigned int num_records = input_buffer->size();
-                std::cout << "num records = " << num_records << std::endl;
+//                std::cout << "num records = " << num_records << std::endl;
                 //loop through right_rel records in input buffer
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record rightRecord = input_buffer->get_record(r);                           // index of vector<Record> in page.cpp
 					unsigned int hash_val = (rightRecord.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);//re-hash right_rel record and get new index value
-                    std::cout << "hash val = " << hash_val << std::endl;
+//                    std::cout << "hash val = " << hash_val << std::endl;
                     //get matching page to current re-hashed page from memory
 					Page* matching_page = mem->mem_page(hash_val);
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
-                        std::cout << "matching page size = " << matching_page->size() << std::endl;
+//                        std::cout << "matching page size = " << matching_page->size() << std::endl;
                         Record leftRecord = matching_page->get_record(s);
 						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
 							// WE HAVE A MATCH
