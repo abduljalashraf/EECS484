@@ -135,8 +135,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 		num_right_rel += partitions[i].num_right_rel_record;
 		num_left_rel += partitions[i].num_left_rel_record;
 	}
-    std::cout << "numRightRel = " << num_right_rel << std::endl;
-    std::cout << "numLeftRel = " << num_left_rel << std::endl;
+//    std::cout << "numRightRel = " << num_right_rel << std::endl;
+//    std::cout << "numLeftRel = " << num_left_rel << std::endl;
 
 
 	string outer_rel;
@@ -172,7 +172,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
             
             //Start right_rel rehashing
 			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                        //creates output buffer page that points to last page in memory
-			for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
+            std::cout << "num_right_record = " << partitions[i].num_right_rel_record << std::endl;
+            for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
 				vector<unsigned int> right_rel = partitions[i].get_right_rel();                 //get right_rel from ith bucket in partition
 				unsigned int disk_page = right_rel[j];                                          //get page on disk where right_rel is
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
