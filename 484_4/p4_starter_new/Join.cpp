@@ -202,7 +202,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							// load to output buffer
                             //record = right_rel, matching_page->get_record(s) = left_rel
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-                            std::cout << "CHECKFORERROR" << std::endl;
 
 
 						}
@@ -210,7 +209,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				}
 			}
 
-		}
+		}//if left
 
 
 
@@ -223,6 +222,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                         //load right_rel into input buffer
 				unsigned int num_records = input_buffer->size();
+                std::cout << "CHECKFORERROR" << std::endl;
+
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record record = input_buffer->get_record(r);                                    // index of vector<Record> in page.cpp
 					unsigned int hash_val = (record.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);         //hash right_rel record
