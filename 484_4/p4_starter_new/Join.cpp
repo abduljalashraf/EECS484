@@ -28,7 +28,7 @@ vector<Bucket> partition(
     Mem* mem, 
     pair<unsigned int, unsigned int> left_rel, 
     pair<unsigned int, unsigned int> right_rel) {
-
+    mem->reset();
 
 	// initialize our output vector
 	Bucket empty_bucket(disk);
