@@ -69,9 +69,6 @@ vector<Bucket> partition(
             
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
             partitions[hash_val].add_left_rel_page(flushed_disk_page);
-            
-            std::cout << "i + 1 = " << i+1 << std::endl;
-            std::cout << "hash_val = " << hash_val << std::endl;
 //			partitions[i+1].add_left_rel_page(flushed_disk_page);
 		}
 	}
@@ -106,19 +103,13 @@ vector<Bucket> partition(
             //THIS IS A TEST
             Record record = (mem->mem_page(i))->get_record(0);
             unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
-
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
-//            std::cout << "disk page = " << flushed_disk_page << std::endl;
             partitions[hash_val].add_right_rel_page(flushed_disk_page);
 //			partitions[i+1].add_right_rel_page(flushed_disk_page);
-//            std::cout << "partition[i].size() = " << partitions[i+1].num_right_rel_record << std::endl;
 
 		}
 	}
-//    for(unsigned int i = 0; i < partitions.size(); i++){
-//        std::cout << "partition[i].size() = " << partitions[i].num_right_rel_record << std::endl;
-//
-//    }
+
 	return partitions;
     
 }
