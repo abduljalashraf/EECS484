@@ -122,8 +122,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 		num_right_rel += partitions[i].num_right_rel_record;
 		num_left_rel += partitions[i].num_left_rel_record;
 	}
-    cout << "numRightRel = " << num_right_rel << "/n";
-    cout << "numLeftRel = " << num_left_rel << "/n";
+    std::cout << "numRightRel = " << num_right_rel << "/n";
+    std::cout << "numLeftRel = " << num_left_rel << "/n";
 
 
 	string outer_rel;
