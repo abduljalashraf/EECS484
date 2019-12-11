@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
 
 	/* Grace Hash Join Probe Phase */
 	vector<unsigned int> join_res = probe(&disk, &mem, res);
-    cout << "num load: " << mem.loadFromDiskTimes() << endl;
-    cout << "num flush: " << mem.flushToDiskTimes() << endl;
+//    cout << "num load: " << mem.loadFromDiskTimes() << endl;
+//    cout << "num flush: " << mem.flushToDiskTimes() << endl;
     
 
 	/* Print the result */

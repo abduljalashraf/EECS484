@@ -203,6 +203,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							// load to output buffer
                             //record = right_rel, matching_page->get_record(s) = left_rel
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
+                            leftRecord.print();
+                            rightRecord.print();
 						}
 					}
                     
@@ -263,6 +265,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 							// load to output buffer
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
+                            leftRecord.print();
+                            rightRecord.print();
+                            
 
 						}
 					}
