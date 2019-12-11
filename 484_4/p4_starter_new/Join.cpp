@@ -208,6 +208,11 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
                     
 				}
 			}
+            //if output buffer is not empty flush the results
+               if(!output_buffer->empty()){
+                   unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+                   result.push_back(flushed_disk_page);
+               }
 
 		}//if left
 
@@ -263,13 +268,14 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					}
 				}
 			}
+            //if output buffer is not empty flush the results
+               if(!output_buffer->empty()){
+                   unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+                   result.push_back(flushed_disk_page);
+               }
 		}//end if
         
-        //if output buffer is not empty flush the results
-        if(!output_buffer->empty()){
-            unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
-            result.push_back(flushed_disk_page);
-        }
+       
 
 	}
 
