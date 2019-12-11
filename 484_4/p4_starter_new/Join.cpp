@@ -98,7 +98,6 @@ vector<Bucket> partition(
 			partitions[i+1].add_right_rel_page(flushed_disk_page);
 		}
 	}
-
 	return partitions;
     
 }
@@ -114,7 +113,7 @@ vector<Bucket> partition(
  * Output: Vector of disk page ids for join result
  */
 vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
-    
+    mem->reset();
 	vector<unsigned int> result;
 
 	unsigned int num_right_rel = 0;
