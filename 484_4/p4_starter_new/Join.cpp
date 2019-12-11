@@ -82,7 +82,7 @@ vector<Bucket> partition(
 			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
             record.print();
 			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
-
+            std::cout << "hash_val = " << hash_val << std::endl;
 			// check if this memory page is full
 			if ((mem->mem_page(hash_val))->full()) {
 				unsigned int flushed_disk_page = mem->flushToDisk(disk, hash_val);
