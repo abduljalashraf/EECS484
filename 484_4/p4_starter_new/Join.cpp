@@ -60,18 +60,12 @@ vector<Bucket> partition(
 
 	}
 	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
-//	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
-//		if (((mem->mem_page(i))->size()) > 0) {
-//			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
-//			partitions[i+1].add_left_rel_page(flushed_disk_page);
-//		}
-//	}
-    for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
-        if (((mem->mem_page(i))->size()) > 0) {
-            unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
-            partitions[i].add_right_rel_page(flushed_disk_page);
-        }
-    }
+	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
+		if (((mem->mem_page(i))->size()) > 0) {
+			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+			partitions[i+1].add_left_rel_page(flushed_disk_page);
+		}
+	}
 
 
 	// hash all the tuples of right_rel into buckets
@@ -98,19 +92,13 @@ vector<Bucket> partition(
 		}
 	}
 	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
-//	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
-//		if (((mem->mem_page(i))->size()) > 0) {
-//			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
-//			partitions[i+1].add_right_rel_page(flushed_disk_page);
-//		}
-//	}
+	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
+		if (((mem->mem_page(i))->size()) > 0) {
+			unsigned int flushed_disk_page = mem->flushToDisk(disk, i+1);
+			partitions[i+1].add_right_rel_page(flushed_disk_page);
+		}
+	}
 
-    for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
-        if (((mem->mem_page(i))->size()) > 0) {
-            unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
-            partitions[i].add_right_rel_page(flushed_disk_page);
-        }
-    }
 	return partitions;
     
 }
