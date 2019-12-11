@@ -39,11 +39,10 @@ int main(int argc, char* argv[]) {
 	/* Grace Hash Join Partition Phase */
 	vector<Bucket> res = partition(&disk, &mem, left_rel, right_rel);
 
-//    cout << "num load: " << mem.loadFromDiskTimes() << endl;
-//    cout << "num flush: " << mem.flushToDiskTimes() << endl;
 	/* Grace Hash Join Probe Phase */
 	vector<unsigned int> join_res = probe(&disk, &mem, res);
-    
+    cout << "num load: " << mem.loadFromDiskTimes() << endl;
+    cout << "num flush: " << mem.flushToDiskTimes() << endl;
     
 
 	/* Print the result */
