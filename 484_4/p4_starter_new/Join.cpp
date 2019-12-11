@@ -179,7 +179,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                     //create input buffer page that points to second to last page
 				unsigned int num_records = input_buffer->size();
                 //loop through right_rel records in input buffer
-                std::cout << "CHECKFORERROR" << std::endl;
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record rightRecord = input_buffer->get_record(r);                           // index of vector<Record> in page.cpp
 					unsigned int hash_val = (rightRecord.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);//re-hash right_rel record and get new index value
@@ -191,6 +190,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
 							// WE HAVE A MATCH
 							// check if output buffer is full
+                            std::cout << "CHECKFORERROR" << std::endl;
+
 							if (output_buffer->full()) {
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
