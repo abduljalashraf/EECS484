@@ -151,8 +151,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 	for (unsigned int i = 0; i < partitions.size(); ++i) {
 
 		if (outer_rel == "left") {
-
+            
 			// loop through the left_rel items in each bucket
+            std::cout << "num left rel record = " << partitions[i].num_left_rel_record << std::endl;
 			for (unsigned int j = 0; j < partitions[i].num_left_rel_record; j++) {
                 std::cout << "j = " << j << std::endl;
                 
