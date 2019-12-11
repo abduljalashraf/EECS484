@@ -155,7 +155,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 			// loop through the left_rel items in each bucket
 			for (unsigned int j = 0; j < partitions[i].num_left_rel_record; j++) {
-                std::cout << "CHECKFORERRORagain" << std::endl;
+                std::cout << "numLeft = " << partitions[i].num_left_rel_record << std::endl;
 
 				vector<unsigned int> left_rel = partitions[i].get_left_rel();
 				unsigned int disk_page = left_rel[j];                                           //Find page on disk where left_rel is
