@@ -184,6 +184,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
                 std::cout << "num records = " << num_records << std::endl;
                 //loop through right_rel records in input buffer
 				for (unsigned int r = 0; r < num_records; ++r) {
+                    std::cout << "num records = " << num_records << std::endl;
 					Record rightRecord = input_buffer->get_record(r);                           // index of vector<Record> in page.cpp
 					unsigned int hash_val = (rightRecord.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);//re-hash right_rel record and get new index value
                     std::cout << "hash val = " << hash_val << std::endl;
@@ -207,8 +208,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
                             leftRecord.print();
                             rightRecord.print();
-
-
 						}
 					}
                     
