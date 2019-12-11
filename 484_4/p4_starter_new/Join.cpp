@@ -186,7 +186,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record rightRecord = input_buffer->get_record(r);                           // index of vector<Record> in page.cpp
 					unsigned int hash_val = (rightRecord.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);//re-hash right_rel record and get new index value
-                    
+                    std::cout << "hash val = " << hash_val << std::endl;
                     //get matching page to current re-hashed page from memory
 					Page* matching_page = mem->mem_page(hash_val);
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
@@ -208,6 +208,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 						}
 					}
+                    
+                    //do we flush everything to disk here?
 				}
 			}
 
