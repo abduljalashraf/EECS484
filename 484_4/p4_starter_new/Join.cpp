@@ -192,13 +192,11 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
                         std::cout << "matching page size = " << matching_page->size() << std::endl;
                         Record leftRecord = matching_page->get_record(s);
-                        leftRecord.print();
 						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
 							// WE HAVE A MATCH
 							// check if output buffer is full
 
 							if (output_buffer->full()) {
-                                std::cout << "go in here?" << std::endl;
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
 
@@ -207,6 +205,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							// load to output buffer
                             //record = right_rel, matching_page->get_record(s) = left_rel
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
+                            leftRecord.print();
+                            rightRecord.print();
 
 
 						}
