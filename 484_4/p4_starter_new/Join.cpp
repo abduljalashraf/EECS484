@@ -180,7 +180,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
             }
 
 			// clear B-2 buckets
-			mem->reset();
+			// mem->reset();
 
 
 		}//if left
@@ -242,8 +242,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
             }
 
 			// clear B-2 buckets
-			mem->reset();
-			
+			// mem->reset();
+
 		}//end if  
 	}
     return result;
