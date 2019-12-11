@@ -100,6 +100,8 @@ vector<Bucket> partition(
             std::cout << "disk page = " << flushed_disk_page << std::endl;
 
 			partitions[i+1].add_right_rel_page(flushed_disk_page);
+            std::cout << "partition[i].size() = " << partitions[i+1].num_right_rel_record << std::endl;
+
 		}
 	}
 //    for(unsigned int i = 0; i < partitions.size(); i++){
