@@ -149,6 +149,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 	// loop through each bucket one by one in the partitions vector
 	for (unsigned int i = 0; i < partitions.size(); ++i) {
+ std::cout << "CHECKFORERROR" << std::endl;
 
 		if (outer_rel == "left") {
 
@@ -214,7 +215,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 
 		if (outer_rel == "right") {
-            std::cout << "CHECKFORERROR" << std::endl;
 
 			// loop through the left_rel items in each bucket
 			for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
