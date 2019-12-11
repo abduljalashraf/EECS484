@@ -122,8 +122,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 	// loop through each bucket one by one in the partitions vector
 	for (unsigned int i = 0; i < partitions.size(); ++i) {
-		// clear B-2 buckets
-		mem->reset();
+		
 		if (outer_rel == "left") {
             
             //get left rel first and use the size of that vector to loop through items in each bucket
@@ -173,6 +172,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					}
                     
 				}
+				// clear B-2 buckets
+				mem->reset();
 			}
             //if output buffer is not empty flush the results
             if(!(output_buffer->size() > 0)){
