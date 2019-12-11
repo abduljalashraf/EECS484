@@ -100,6 +100,10 @@ vector<Bucket> partition(
 			partitions[i+1].add_right_rel_page(flushed_disk_page);
 		}
 	}
+    for(int i = 0; i < partitions.size(); i++){
+        std::cout << "partition[i].size() = " << partitions[i].num_right_rel_record << std::endl;
+
+    }
 	return partitions;
     
 }
@@ -123,8 +127,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 	for (unsigned int i = 0; i < partitions.size(); ++i) {
 		num_right_rel += partitions[i].num_right_rel_record;
-        std::cout << "partition[i].size() = " << partitions[i].num_right_rel_record << std::endl;
-
 		num_left_rel += partitions[i].num_left_rel_record;
 	}
     std::cout << "numRightRel = " << num_right_rel << std::endl;
