@@ -54,7 +54,7 @@ vector<Bucket> partition(
 		}
 	}
 
-
+	mem->reset();
 	// hash all the tuples of right_rel into buckets
 	for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
 
@@ -172,8 +172,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					}
                     
 				}
-				// clear B-2 buckets
-				mem->reset();
 			}
             //if output buffer is not empty flush the results
             if(!(output_buffer->size() > 0)){
@@ -240,8 +238,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
             }
 
 			// clear B-2 buckets
-			// mem->reset();
-
+			for(int p = 0; p < MEM_SIZE_IN_PAGE - 1; p++){
+				(mem->mem_page(p))->reset();
+			}
 		}//end if  
 	}
     return result;
