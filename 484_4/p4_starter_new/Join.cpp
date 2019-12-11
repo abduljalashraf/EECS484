@@ -149,14 +149,11 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 	// loop through each bucket one by one in the partitions vector
 	for (unsigned int i = 0; i < partitions.size(); ++i) {
-        std::cout << "CHECKFORERROR" << std::endl;
 
 		if (outer_rel == "left") {
 
 			// loop through the left_rel items in each bucket
 			for (unsigned int j = 0; j < partitions[i].num_left_rel_record; j++) {
-                std::cout << "numLeft = " << partitions[i].num_left_rel_record << std::endl;
-
 				vector<unsigned int> left_rel = partitions[i].get_left_rel();
 				unsigned int disk_page = left_rel[j];                                           //Find page on disk where left_rel is
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
@@ -181,6 +178,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				vector<unsigned int> right_rel = partitions[i].get_right_rel();                 //get right_rel from ith bucket in partition
 				unsigned int disk_page = right_rel[j];                                          //get page on disk where right_rel is
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
+
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                     //create input buffer page that points to second to last page
 				unsigned int num_records = input_buffer->size();
                 //loop through right_rel records in input buffer
