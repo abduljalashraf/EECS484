@@ -80,6 +80,7 @@ vector<Bucket> partition(
 		for (unsigned int r = 0; r < num_records; ++r) {
 
 			Record record = input_buffer->get_record(r); // index of vector<Record> in page.cpp
+            record.print();
 			unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
 			// check if this memory page is full
@@ -100,10 +101,10 @@ vector<Bucket> partition(
 			partitions[i+1].add_right_rel_page(flushed_disk_page);
 		}
 	}
-    for(unsigned int i = 0; i < partitions.size(); i++){
-        std::cout << "partition[i].size() = " << partitions[i].num_right_rel_record << std::endl;
-
-    }
+//    for(unsigned int i = 0; i < partitions.size(); i++){
+//        std::cout << "partition[i].size() = " << partitions[i].num_right_rel_record << std::endl;
+//
+//    }
 	return partitions;
     
 }
