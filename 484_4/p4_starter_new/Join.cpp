@@ -194,13 +194,14 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							if (output_buffer->full()) {
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
-                                std::cout << "CHECKFORERROR" << std::endl;
 
 							}
 
 							// load to output buffer
                             //record = right_rel, matching_page->get_record(s) = left_rel
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
+                            std::cout << "CHECKFORERROR" << std::endl;
+
 
 						}
 					}
