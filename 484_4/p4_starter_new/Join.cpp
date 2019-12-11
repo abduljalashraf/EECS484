@@ -203,8 +203,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							// load to output buffer
                             //record = right_rel, matching_page->get_record(s) = left_rel
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-                            leftRecord.print();
-                            rightRecord.print();
 						}
 					}
                     
@@ -233,8 +231,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					(mem->mem_page(hash_val))->loadRecord(record);
 				}
 			}//right_rel rehashing is now complete
-
-			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                            //create an output buffer page that points to the last page in                                                                                            memory
+			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                            //create an output buffer page that points to the last page in
             vector<unsigned int> left_rel = partitions[i].get_left_rel();
 			for (unsigned int j = 0; j < left_rel.size(); j++) {
 				
@@ -251,7 +248,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					Page* matching_page = mem->mem_page(hash_val);
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
                         Record rightRecord = matching_page->get_record(s);
-						if (rightRecord == leftRecord) {                                            //compare recrds in matching page to current left record
+						if (rightRecord == leftRecord) {                                            //compare reocrds in matching page to current left record
 							// WE HAVE A MATCH
 							// check if output buffer is full
 							if (output_buffer->full()) {
@@ -266,8 +263,13 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					}
 				}
 			}
-
-		}
+		}//end if
+        
+        //if output buffer is not empty flush the results
+        if(!output_buffer->empty()){
+            unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+            result.push_back(flushed_disk_page);
+        }
 
 	}
 
