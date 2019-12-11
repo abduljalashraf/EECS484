@@ -69,6 +69,9 @@ vector<Bucket> partition(
             
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
             partitions[hash_val].add_left_rel_page(flushed_disk_page);
+            
+            std::cout << "i + 1 = " << i+1 << std::endl;
+            std::cout << "hash_val = " << hash_val << std::endl;
 //			partitions[i+1].add_left_rel_page(flushed_disk_page);
 		}
 	}
