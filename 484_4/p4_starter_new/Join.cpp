@@ -219,10 +219,11 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 			for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
 				vector<unsigned int> right_rel = partitions[i].get_right_rel();
 				unsigned int disk_page = right_rel[j];                                              //find page on disk where right_rel is
-				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
+                std::cout << "CHECKFORERROR" << std::endl;
+
+                mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                         //load right_rel into input buffer
 				unsigned int num_records = input_buffer->size();
-                std::cout << "CHECKFORERROR" << std::endl;
 
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record record = input_buffer->get_record(r);                                    // index of vector<Record> in page.cpp
