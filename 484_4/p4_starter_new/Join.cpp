@@ -179,7 +179,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				unsigned int disk_page = right_rel[j];                                          //get page on disk where right_rel is
                 std::cout << "disk page = " << disk_page << std::endl;
                 mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
-
+                std::cout << "is this my error?" << std::endl;
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                     //create input buffer page that points to second to last page
 				unsigned int num_records = input_buffer->size();
                 //loop through right_rel records in input buffer
