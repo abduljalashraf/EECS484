@@ -116,7 +116,7 @@ vector<Bucket> partition(
 
 
 
-
+//Where are we accessing disk wrong? is it from the value in partition
 
 
 /*
@@ -147,7 +147,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 		outer_rel = "right";
 	}
 
-	// loop through each bucket one by one
+	// loop through each bucket one by one in the partitions vector
 	for (unsigned int i = 0; i < partitions.size(); ++i) {
 
 		if (outer_rel == "left") {
@@ -170,6 +170,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				}
 			} //left_rel rehashing is done now
 
+            std::cout << "left_rel rehashing done" << std::endl;
+            
             //Start right_rel rehashing
 			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                        //creates output buffer page that points to last page in memory
 			for (unsigned int j = 0; j < partitions[i].num_right_rel_record; j++) {
