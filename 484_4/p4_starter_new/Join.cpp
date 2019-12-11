@@ -2,24 +2,6 @@
 #include <functional>
 #include <iostream>
 
-
-
-
-// DON'T NEED TO USE DISK_SIZE_IN_PAGE or DISK_READ() 
-// use loadFromDisk in the memory class
-// FLUSH OUTPUT BUFFER only when it is full or at the VERY end of the probing phase if it isn't empty
-
-
-// OH QUESTIONS:
-
-// how to find number of records in left_rel and right_rel? need to calculate which rel is smaller WHEN?
-// What specific mem page to load to? just choose an input buffer page?
-// what is the page ID in line 51?
-// flush output buffers to disk after hashing R? when flushing to disk, why do you not have to know where to put it? 
-// check understanding of partition and probe
-// final result of probe is what??
-
-
 /*
  * TODO: Student implementation
  * Input: Disk, Memory, Disk page ids for left relation, Disk page ids for right relation
@@ -69,7 +51,6 @@ vector<Bucket> partition(
             
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
             partitions[hash_val].add_left_rel_page(flushed_disk_page);
-//			partitions[i+1].add_left_rel_page(flushed_disk_page);
 		}
 	}
 
@@ -114,11 +95,6 @@ vector<Bucket> partition(
     
 }
 
-
-
-//Where are we accessing disk wrong? is it from the value in partition
-
-
 /*
  * TODO: Student implementation
  * Input: Disk, Memory, Vector of Buckets after partition
@@ -135,9 +111,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 		num_right_rel += partitions[i].num_right_rel_record;
 		num_left_rel += partitions[i].num_left_rel_record;
 	}
-//    std::cout << "numRightRel = " << num_right_rel << std::endl;
-//    std::cout << "numLeftRel = " << num_left_rel << std::endl;
-
 
 	string outer_rel;
 	if (num_right_rel >= num_left_rel) {
@@ -152,8 +125,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 		if (outer_rel == "left") {
             
-			// loop through the left_rel items in each bucket
-            //get left rel first and use the size of that vector to loop
+            //get left rel first and use the size of that vector to loop through items in each bucket
             vector<unsigned int> left_rel = partitions[i].get_left_rel();
 			for (unsigned int j = 0; j < left_rel.size(); j++) {
 				unsigned int disk_page = left_rel[j];                                           //Find page on disk where left_rel is
@@ -168,32 +140,26 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					(mem->mem_page(hash_val))->loadRecord(record);
                     
 				}
-			} //left_rel rehashing is done now
+			} //left_rel rehashing done
             
-            //Start right_rel rehashing
 			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                        //creates output buffer page that points to last page in memory
             vector<unsigned int> right_rel = partitions[i].get_right_rel();
             for (unsigned int j = 0; j < right_rel.size(); j++) {
-				                 //get right_rel from ith bucket in partition
 				unsigned int disk_page = right_rel[j];                                          //get page on disk where right_rel is
                 mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                     //create input buffer page that points to second to last page
 				unsigned int num_records = input_buffer->size();
-//                std::cout << "num records = " << num_records << std::endl;
+
                 //loop through right_rel records in input buffer
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record rightRecord = input_buffer->get_record(r);                           // index of vector<Record> in page.cpp
 					unsigned int hash_val = (rightRecord.probe_hash()) % (MEM_SIZE_IN_PAGE - 2);//re-hash right_rel record and get new index value
-//                    std::cout << "hash val = " << hash_val << std::endl;
+
                     //get matching page to current re-hashed page from memory
 					Page* matching_page = mem->mem_page(hash_val);
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
-//                        std::cout << "matching page size = " << matching_page->size() << std::endl;
                         Record leftRecord = matching_page->get_record(s);
-						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
-							// WE HAVE A MATCH
-							// check if output buffer is full
-
+						if (leftRecord == rightRecord) { 
 							if (output_buffer->full()) {
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
@@ -201,10 +167,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							}
 
 							// load to output buffer
-                            //record = right_rel, matching_page->get_record(s) = left_rel
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-                            leftRecord.print();
-                            rightRecord.print();
 						}
 					}
                     
@@ -237,15 +200,16 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					// loadRecord into memory at hashed index from above
 					(mem->mem_page(hash_val))->loadRecord(record);
 				}
-			}//right_rel rehashing is now complete
+			}//right_rel rehashing is done
+
 			Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                            //create an output buffer page that points to the last page in
             vector<unsigned int> left_rel = partitions[i].get_left_rel();
 			for (unsigned int j = 0; j < left_rel.size(); j++) {
-				
 				unsigned int disk_page = left_rel[j];
 				mem->loadFromDisk(disk, disk_page, (MEM_SIZE_IN_PAGE - 2));
 				Page* input_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 2));                         //create input buffer page that points to second to last  mem page
 				unsigned int num_records = input_buffer->size();
+
                 //loop through left_rel records
 				for (unsigned int r = 0; r < num_records; ++r) {
 					Record leftRecord = input_buffer->get_record(r);                                // index of vector<Record> in page.cpp
@@ -256,8 +220,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
                         Record rightRecord = matching_page->get_record(s);
 						if (rightRecord == leftRecord) {                                            //compare reocrds in matching page to current left record
-							// WE HAVE A MATCH
-							// check if output buffer is full
 							if (output_buffer->full()) {
 								unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
 								result.push_back(flushed_disk_page);
@@ -265,10 +227,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 							// load to output buffer
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-                            leftRecord.print();
-                            rightRecord.print();
-                            
-
 						}
 					}
 				}
@@ -278,30 +236,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
                    unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
                    result.push_back(flushed_disk_page);
                }
-		}//end if
-        
-       
-
+		}//end if  
 	}
-
     return result;
-
-	// my understanding of probe:
-	// vector of buckets, partitions. Go through this one at a time and look at a whole bucket of Ri. Re-hash these things with new hashing function
-	// then take the matching bucket Si and hash each of these things with the new hashing function. only things that match to the same bucket could match
-	// this is when you use == to compare and look for matches/joins
-
-
-	// in the probing phase, one buffer input page, one output buffer page, B - 2 left, use last two as input/output
-
-	// pull partition Ri and create a hash table of the tuples in Ri
-
-	// check partition Si for matches, hash first though
-
-	// use == to check if any of the relations' keys in the smaller relation match the key of the larger rel
 }
-
-
-
-
-// use smaller relation as outer (or left if equal)
