@@ -190,6 +190,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
                     //get matching page to current re-hashed page from memory
 					Page* matching_page = mem->mem_page(hash_val);
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
+                        std::cout << "matching page size = " << matching_page->size() << std::endl;
                         Record leftRecord = matching_page->get_record(s);
 						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
 							// WE HAVE A MATCH
