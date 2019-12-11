@@ -64,8 +64,12 @@ vector<Bucket> partition(
 	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
 	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
 		if (((mem->mem_page(i))->size()) > 0) {
+            Record record = (mem->mem_page(i))->get_record(0);
+            unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
+            
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
-			partitions[i+1].add_left_rel_page(flushed_disk_page);
+            partitions[hash_val].add_left_rel_page(flushed_disk_page);
+//			partitions[i+1].add_left_rel_page(flushed_disk_page);
 		}
 	}
 
@@ -96,12 +100,15 @@ vector<Bucket> partition(
 	// flush if anything left in B-1 buckets in memory pages (loop through and check size)
 	for (unsigned int i = 0; i < (MEM_SIZE_IN_PAGE - 1); ++i) {
 		if (((mem->mem_page(i))->size()) > 0) {
-            
-			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
-            std::cout << "disk page = " << flushed_disk_page << std::endl;
+            //THIS IS A TEST
+            Record record = (mem->mem_page(i))->get_record(0);
+            unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 
-			partitions[i+1].add_right_rel_page(flushed_disk_page);
-            std::cout << "partition[i].size() = " << partitions[i+1].num_right_rel_record << std::endl;
+			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
+//            std::cout << "disk page = " << flushed_disk_page << std::endl;
+            partitions[hash_val].add_right_rel_page(flushed_disk_page);
+//			partitions[i+1].add_right_rel_page(flushed_disk_page);
+//            std::cout << "partition[i].size() = " << partitions[i+1].num_right_rel_record << std::endl;
 
 		}
 	}
