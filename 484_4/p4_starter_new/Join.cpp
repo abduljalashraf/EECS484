@@ -109,10 +109,14 @@ vector<Bucket> partition(
  * Input: Disk, Memory, Vector of Buckets after partition
  * Output: Vector of disk page ids for join result
  */
-//vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
+vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
+    mem = mem;
+    disk = disk;
+    partitions = partitions;
+    
+    
+	vector<unsigned int> result;
 //
-//	vector<unsigned int> result;
-//	
 //	unsigned int num_right_rel = 0;
 //	unsigned int num_left_rel = 0;
 //	for (unsigned int i = 0; i < partitions.size(); ++i) {
@@ -248,8 +252,8 @@ vector<Bucket> partition(
 //	// check partition Si for matches, hash first though
 //
 //	// use == to check if any of the relations' keys in the smaller relation match the key of the larger rel
-//	return result;
-//}
+	return result;
+}
 
 
 
