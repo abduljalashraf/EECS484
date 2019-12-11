@@ -192,6 +192,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					for (unsigned int s = 0; s < matching_page->size(); s++) {
                         std::cout << "matching page size = " << matching_page->size() << std::endl;
                         Record leftRecord = matching_page->get_record(s);
+                        leftRecord.print();
 						if (leftRecord == rightRecord) {                                        //we are comparing records here, is that right?
 							// WE HAVE A MATCH
 							// check if output buffer is full
