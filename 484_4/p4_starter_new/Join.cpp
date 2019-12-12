@@ -173,10 +173,10 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				}
 			}
             //if output buffer is not empty flush the results
-            if(!(output_buffer->size() > 0)){
-                unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
-                result.push_back(flushed_disk_page);
-            }
+            // if(!(output_buffer->size() > 0)){
+            //     unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+            //     result.push_back(flushed_disk_page);
+            // }
 
 			// clear B-2 buckets
 			for(unsigned int p = 0; p < MEM_SIZE_IN_PAGE - 1; p++){
@@ -235,11 +235,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 					}
 				}
 			}
-            //if output buffer is not empty flush the results
-            if(!(output_buffer->size() > 0)){
-                unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
-                result.push_back(flushed_disk_page);
-            }
+            
 
 			// clear B-2 buckets
 			for(unsigned int p = 0; p < MEM_SIZE_IN_PAGE - 1; p++){
@@ -247,5 +243,12 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 			}
 		}//end if  
 	}
+
+	//if output buffer is not empty flush the results
+    if(!(output_buffer->size() > 0)){
+        unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
+        result.push_back(flushed_disk_page);
+    }
+
     return result;
 }
