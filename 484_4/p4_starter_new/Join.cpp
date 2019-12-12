@@ -55,7 +55,7 @@ vector<Bucket> partition(
 	}
 
 	mem->reset();
-	
+
 	// hash all the tuples of right_rel into buckets
 	for (unsigned int i = right_rel.first; i < right_rel.second; ++i) {
 
@@ -87,8 +87,6 @@ vector<Bucket> partition(
             unsigned int hash_val = (record.partition_hash()) % (MEM_SIZE_IN_PAGE - 1);
 			unsigned int flushed_disk_page = mem->flushToDisk(disk, i);
             partitions[hash_val].add_right_rel_page(flushed_disk_page);
-//			partitions[i+1].add_right_rel_page(flushed_disk_page);
-
 		}
 	}
 
