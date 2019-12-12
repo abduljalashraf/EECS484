@@ -172,9 +172,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 							// load to output buffer
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-							std::cout << "mem added here = " << std::endl;
-							leftRecord.print();
-							rightRecord.print();
 							// output_buffer -> loadPair(leftRecord, rightRecord);
 						}
 					}
@@ -256,7 +253,6 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 	}
 
 	//if output buffer is not empty flush the results
-	std::cout << "size = " << output_buffer->size() << std::endl;
     if((output_buffer->size() > 0)){
         unsigned int flushed_disk_page = mem->flushToDisk(disk, (MEM_SIZE_IN_PAGE - 1));
         result.push_back(flushed_disk_page);
