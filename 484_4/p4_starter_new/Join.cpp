@@ -172,7 +172,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 
 							// load to output buffer
 							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-							std::cout << "mem added here = " << leftRecord << ", " << rightRecord << std::endl;
+							std::cout << "mem added here = " << std::endl;
+							leftRecord.print();
+							rightRecord.print();
 							// output_buffer -> loadPair(leftRecord, rightRecord);
 						}
 					}
