@@ -181,7 +181,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
             // }
 
 			// clear B-2 buckets
-			for(unsigned int p = 0; p < MEM_SIZE_IN_PAGE - 1; p++){
+			for(unsigned int p = 0; p < MEM_SIZE_IN_PAGE - 2; p++){
 				(mem->mem_page(p))->reset();
 			}
 
