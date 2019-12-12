@@ -119,6 +119,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 		outer_rel = "right";
 	}
 
+
+	//Is this where we do this??
 	Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                            //create an output buffer page that points to the last page in
 
 	// loop through each bucket one by one in the partitions vector
@@ -143,6 +145,7 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 				}
 			} //left_rel rehashing done
             
+
 			// Page* output_buffer = mem->mem_page((MEM_SIZE_IN_PAGE - 1));                         //creates output buffer page that points to last page in memory
             vector<unsigned int> right_rel = partitions[i].get_right_rel();
             for (unsigned int j = 0; j < right_rel.size(); j++) {
@@ -168,8 +171,9 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							}
 
 							// load to output buffer
-							// (mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-							output_buffer -> loadPair(leftRecord, rightRecord);
+							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
+							std::cout << "mem added here " << std::endl;
+							// output_buffer -> loadPair(leftRecord, rightRecord);
 						}
 					}
                     
@@ -233,8 +237,8 @@ vector<unsigned int> probe(Disk* disk, Mem* mem, vector<Bucket>& partitions) {
 							}
 
 							// load to output buffer
-							// (mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
-							output_buffer -> loadPair(leftRecord, rightRecord);
+							(mem->mem_page((MEM_SIZE_IN_PAGE - 1)))->loadPair(leftRecord, rightRecord);
+							// output_buffer -> loadPair(leftRecord, rightRecord);
 						}
 					}
 				}
